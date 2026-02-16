@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Carbon\Carbon;
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -13,54 +12,53 @@ return new class extends Migration
     {
         Schema::create('usuarios', function (Blueprint $table) {
             $table->id();
-            $table->string('nick',20)->unique();
-            $table->string('nombre',20);
-            $table->string('apellidos',50)->nullable();
-            $table->string('password',64);
-            $table->string('email',50)->unique();
+            $table->string('nick')->unique();
+            $table->string('nombre')->nullable();
+            $table->string('email')->unique();
+            $table->string('ubicacion')->nullable();
             $table->integer('karma')->default(0);
-            $table->string('avatar',300)->nullable();
+            $table->string('avatar')->nullable();
+            $table->string('tipo')->nullable();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->rememberToken();
+            $table->timestamps();
         });
-
-        Schema::create('usuarios_eventos', function (Blueprint $table) {
-            $table->id();
-            $table->string('lugar',20);
-            $table->string('nombre',20);
-            $table->date('fecha',50)->default(Carbon::now());
-            $table->string('descripcion',300)->nullable();
-            $table->string('tipo_terreno',50)->nullable();
-            $table->integer('tipo_evento')->nullable();
-            $table->string('imagen',300)->nullable();
-            $table->foreignId('id_anfitrion')->nullable()->constrained('usuarios');
-            
-        });
-
-
-
-
 
         Schema::create('eventos', function (Blueprint $table) {
             $table->id();
-            $table->string('lugar',20);
-            $table->string('nombre',20);
-            $table->date('fecha',50)->default(Carbon::now());
-            $table->string('descripcion',300)->nullable();
-            $table->string('tipo_terreno',50)->nullable();
-            $table->integer('tipo_evento')->nullable();
-            $table->string('imagen',300)->nullable();
-            $table->foreignId('id_anfitrion')->nullable()->constrained('usuarios');
-            
+            $table->string('nombre')->unique();
+            $table->string('descripcion')->nullable();
+            $table->string('ubicacion')->nullable();
+            $table->date('fecha')->nullable();
+            $table->string('tipo_terreno')->nullable();
+            $table->string('tipo_evento')->nullable();
+            $table->string('imagen')->nullable();
+            $table->foreignId('id_anfitrion')->constrained('usuarios')->onDelete('cascade');
         });
 
         Schema::create('especies', function (Blueprint $table) {
             $table->id();
-            $table->string('nick',20)->unique();
-            $table->string('nombre',20);
-            $table->string('apellidos',50)->nullable();
-            $table->string('password',64);
-            $table->string('email',50)->unique();
-            $table->integer('karma')->default(0);
-            $table->string('avatar',150)->nullable();
+            $table->string('nombre_cientifico')->unique();
+            $table->string('tiempo_para_adultez')->nullable();
+            $table->string('region_origen')->nullable();
+            $table->string('clima')->nullable();
+            $table->string('enlace_descripcion')->nullable();
+            $table->string('foto_especie')->nullable();
+            $table->string('beneficios')->nullable();
+        });
+
+        Schema::create('usuarios_eventos', function (Blueprint $table) {
+            $table->foreignId('id_usuario')->constrained('usuarios')->onDelete('cascade');
+            $table->foreignId('id_evento')->constrained('eventos')->onDelete('cascade');
+            $table->primary(columns: ['id_usuario', 'id_evento']);
+
+        });
+
+        Schema::create('eventos_especies', function (Blueprint $table) {
+            $table->foreignId('id_evento')->constrained('eventos')->onDelete('cascade');
+            $table->foreignId('id_especie')->constrained('especies')->onDelete('cascade');
+            $table->primary(columns: ['id_evento', 'id_especie']);
         });
 
     }
@@ -70,8 +68,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('usuarios');
+        Schema::dropIfExists('eventos_especies');
+        Schema::dropIfExists('usuarios_eventos');
         Schema::dropIfExists('especies');
         Schema::dropIfExists('eventos');
+        Schema::dropIfExists('usuarios');
     }
 };
