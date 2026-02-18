@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Usuario;
+use App\Models\Usuarios;
 use Illuminate\Http\Request;
 
-class UsuarioController extends Controller
+class UsuariosController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+       
     }
 
     /**

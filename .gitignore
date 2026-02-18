@@ -17,3 +17,6 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+docker-compose.yaml
+Caddyfile
+php
