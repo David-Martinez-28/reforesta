@@ -12,7 +12,7 @@ class UsuariosController extends Controller
      */
     public function index()
     {
-       echo "h";
+       echo "paco";
     }
 
     /**
