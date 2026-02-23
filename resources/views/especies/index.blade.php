@@ -1,4 +1,6 @@
 <div>
+    @include ('nav')
+
     <div style="overflow-x: auto;">
         <table
             style="width: 100%; border-collapse: collapse; font-family: 'Segoe UI', sans-serif; margin-top: 20px; background: #fff; border-radius: 8px; overflow: hidden;">
@@ -45,6 +47,13 @@
                                     📄
                                 </a>
                             @endif
+                        </td>
+                        <td style="padding: 8px; border: 1px solid #ddd;">
+                            <form action="{{ route('especies.destroy', $especie->id) }}" method="post">
+                                @method('DELETE')
+                                @csrf
+                                <button type="submit">Eliminar</button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach

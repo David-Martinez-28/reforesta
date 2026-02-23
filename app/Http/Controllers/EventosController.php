@@ -21,7 +21,7 @@ class EventosController extends Controller
      */
     public function create()
     {
-        //
+        return view(view: 'eventos.create');
     }
 
     /**
@@ -29,7 +29,18 @@ class EventosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Eventos::create([
+            'nombre' => $request->nombre,
+            'descripcion' => $request->descripcion,
+            'ubicacion' => $request->ubicacion,
+            'fecha' => $request->fecha,
+            'tipo_terreno' => $request->tipo_terreno,
+            'tipo_evento' => $request->tipo_evento,
+            'imagen' => $request->imagen,
+        ]);
+
+        return redirect()->route('eventos.index')->with('success', 'Evento creado correctamente');
+
     }
 
     /**
@@ -61,6 +72,7 @@ class EventosController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Eventos::findOrFail($id)->delete();
+        return redirect('usuario');
     }
 }
