@@ -62,15 +62,14 @@
                             </button>
                         </form>
                     </td>
-<<<<<<< HEAD
-<<<<<<< HEAD
+
                     <td style="padding: 8px; border: 1px solid #ddd;"><a href="{{ url(path: 'usuarios/' . $usuario->id) }}">Ver detalles</a></td>
-=======
+
                     <td style="padding: 8px; border: 1px solid #ddd;"><a href="{{ url(path: 'usuario/' . $usuario->id) }}">Ver detalles</a></td>
->>>>>>> 7f30052b042bf9ca6081e4f367de7595b14241c4
-=======
+
+
                     <td style="padding: 8px; border: 1px solid #ddd;"><a href="{{ url(path: 'usuario/' . $usuario->id) }}">Ver detalles</a></td>
->>>>>>> 7f30052b042bf9ca6081e4f367de7595b14241c4
+
                 </tr>
             @endforeach
         </tbody>

@@ -31,13 +31,12 @@ class UsuariosController extends Controller
      */
     public function store(UsuarioPost $request)
     {
-
         $datos = $request->validated();
 
-
         if ($request->hasFile('avatar')) {
-            $ruta = $request->file('avatar')->store('avatars', 'public');
-            $datos['avatar'] = $ruta;
+            $datos['avatar'] = $request->file('avatar')->store('avatars', 'public');
+        } elseif ($request->filled('avatar_url')) {
+            $datos['avatar'] = $request->input('avatar_url');
         } else {
             $datos['avatar'] = null;
         }
@@ -53,7 +52,7 @@ class UsuariosController extends Controller
             'tipo' => $request->tipo ?? 'user',
         ]);
 
-        return redirect()->route('usuarios.index')->with('success', '¡Usuario creado con ubicación y avatar!');
+        return redirect()->route('usuarios.index')->with('success', '¡Usuario creado correctamente!');
     }
 
     /**
@@ -116,7 +115,7 @@ class UsuariosController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'login' => 'required|email', 
+            'login' => 'required|email',
             'password' => 'required',
         ]);
 
@@ -125,9 +124,9 @@ class UsuariosController extends Controller
             'password' => $request->password
         ];
 
-       
+
         if (Auth::attempt($credenciales)) {
-            
+
             $request->session()->regenerate();
 
             return redirect()->route('eventos.index');

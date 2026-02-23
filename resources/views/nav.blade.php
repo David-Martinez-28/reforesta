@@ -2,6 +2,7 @@
     <a href="{{ url('/eventos') }}">Inicio</a>
     <a href="{{ url('/usuarios') }}">Usuarios</a>
     <a href="{{ url('/especies') }}">Especies</a>
+    <a href="{{ url('/usuarios/create') }}">Crear Usuario</a>
 
     <div style="border-left: 1px solid #ccc; height: 20px; margin: 0 10px;"></div>
 
@@ -38,4 +39,5 @@
             Iniciar Sesión
         </a>
     @endguest
+
 </nav>
