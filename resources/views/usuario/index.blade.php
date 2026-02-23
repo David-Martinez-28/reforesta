@@ -1,5 +1,5 @@
 <div>
-    @include ('nav')
+    @include (view: 'nav')
 
     <table
         style="width: 100%; border-collapse: collapse; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 13px; border: 1px solid #ccc;">
