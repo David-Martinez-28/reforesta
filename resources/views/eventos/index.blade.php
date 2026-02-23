@@ -1,6 +1,5 @@
 <div style="overflow-x: auto;">
-    @include (view: 'nav')
-
+    @include('nav')
     @if(auth()->check())
     @endif
     <table
