@@ -63,6 +63,9 @@
                             <button type="submit">Eliminar</button>
                         </form>
                     </td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">
+                        <a href="{{ url(path: 'eventos/' . $evento->id) }}">Ver detalles</a>
+                    </td>
                 </tr>
             @endforeach
         </tbody>
