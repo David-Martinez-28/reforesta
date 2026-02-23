@@ -21,7 +21,7 @@ class UsuariosController extends Controller
      */
     public function create()
     {
-        return view('usuarios.create');
+        return view('usuario.create');
     }
 
     /**
@@ -31,10 +31,16 @@ class UsuariosController extends Controller
     {
         Usuarios::create([
             'nombre' => $request->nombre,
+            'nick' => $request->nick,
             'email' => $request->email,
+            'password' => $request->password,
+            'ubicacion' => $request->ubicacion,
+            'karma' => $request->karma,
+            'avatar' => $request->avatar,
+            'tipo' => $request->tipo,
         ]);
 
-        return redirect()->route('usuarios.index')->with('success', 'Usuario creado correctamente');
+        return redirect()->route('usuario.index')->with('success', 'Usuario creado correctamente');
     }
 
     /**

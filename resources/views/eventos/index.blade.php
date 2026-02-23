@@ -1,4 +1,5 @@
 <div>
+    @include ('nav')
     <table
         style="width: 100%; border-collapse: collapse; font-family: sans-serif; margin-top: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
         <thead>
