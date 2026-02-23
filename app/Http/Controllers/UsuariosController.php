@@ -47,9 +47,10 @@ class UsuariosController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Usuarios $usuario)
+    public function show(string $id)
     {
-        //
+        $usuario = Usuarios::findOrFail($id);
+        return view('usuario.show', compact('usuario'));
     }
 
     /**
