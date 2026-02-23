@@ -13,8 +13,8 @@ class EventosController extends Controller
     public function index()
     {
         $eventos = Eventos::all();
-       return view("eventos.index", compact("eventos"));
-    
+        return view("eventos.index", compact("eventos"));
+
     }
 
     /**
