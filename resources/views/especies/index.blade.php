@@ -1,4 +1,6 @@
 <div>
+    @include ('nav')
+
     <div style="overflow-x: auto;">
         <table
             style="width: 100%; border-collapse: collapse; font-family: 'Segoe UI', sans-serif; margin-top: 20px; background: #fff; border-radius: 8px; overflow: hidden;">

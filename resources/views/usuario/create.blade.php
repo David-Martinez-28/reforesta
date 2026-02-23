@@ -10,7 +10,7 @@
     @include ('nav')
         <div class="contenedor">
             <h1>Registrar usuario</h1>
-            <form action="{{ route(name: 'usario.store') }}" method="POST">
+            <form action="{{ route(name: 'usuario.store') }}" method="POST">
                 @csrf
 
                 <label for="nombre">Nombre: </label><br>
@@ -25,8 +25,8 @@
                 <label for="password">Contraseña: </label><br>
                 <input type="password" name="nick" class="nick"><br><br>
 
-                <label for="ubi">Ubicación: </label><br>
-                <input type="text" name="ubi" class="ubi"><br><br>
+                <label for="ubicacion">Ubicación: </label><br>
+                <input type="text" name="ubicacion" class="ubicacion"><br><br>
 
                 <label for="karma">Karma: </label><br>
                 <input type="text" name="karma" class="karma"><br><br>

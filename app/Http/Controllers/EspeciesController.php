@@ -13,8 +13,8 @@ class EspeciesController extends Controller
     public function index()
     {
         $especies = Especies::all();
-       return view("especies.index", compact("especies"));
-    
+        return view("especies.index", compact("especies"));
+
     }
 
     /**
@@ -22,7 +22,7 @@ class EspeciesController extends Controller
      */
     public function create()
     {
-        //
+        return view(view: 'especies.create');
     }
 
     /**
@@ -30,7 +30,17 @@ class EspeciesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Especies::create([
+            'nombre_cientifico' => $request->nombre_cientifico,
+            'tiempo_para_adultez' => $request->tiempo_para_adultez,
+            'region_origen' => $request->region_origen,
+            'clima' => $request->clima,
+            'enlace_descripcion' => $request->enlace_descripcion,
+            'foto_especie' => $request->foto_especie,
+            'beneficios' => $request->beneficios,
+        ]);
+
+        return redirect()->route('especies.index')->with('success', 'Especie creado correctamente');
     }
 
     /**

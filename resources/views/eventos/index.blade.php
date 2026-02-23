@@ -1,5 +1,8 @@
 <div style="overflow-x: auto;">
-    <table style="width: 100%; border-collapse: collapse; font-family: sans-serif; margin-top: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+    @include ('nav')
+
+    <table
+        style="width: 100%; border-collapse: collapse; font-family: sans-serif; margin-top: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
         <thead>
             <tr style="background-color: #27ae60; color: white; text-align: left;">
                 <th style="padding: 12px; border: 1px solid #ddd;">ID</th>
@@ -27,11 +30,12 @@
                         <span style="font-weight: bold; display: block;">{{ $evento->nombre }}</span>
                         <small style="color: #7f8c8d;">Anfitrión: #{{ $evento->id_anfitrion }}</small>
                     </td>
-                    
+
                     <td style="padding: 10px; border: 1px solid #ddd;">
                         @if($evento->especies->count() > 0)
                             @foreach($evento->especies as $especie)
-                                <div style="display: flex; align-items: center; margin-bottom: 4px; background: #f0f9f4; padding: 4px; border-radius: 4px; border-left: 3px solid #2ecc71;">
+                                <div
+                                    style="display: flex; align-items: center; margin-bottom: 4px; background: #f0f9f4; padding: 4px; border-radius: 4px; border-left: 3px solid #2ecc71;">
                                     <span style="font-size: 0.85em; color: #27ae60; font-style: italic;">
                                         🌿 {{ $especie->nombre_cientifico }}
                                     </span>
