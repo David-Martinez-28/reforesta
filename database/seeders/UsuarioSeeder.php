@@ -13,6 +13,15 @@ class UsuarioSeeder extends Seeder
      */
     public function run(): void
     {
-        Usuarios::factory(10)->create();
+        
+        Usuarios::factory()
+        ->count(5)
+        ->has(Eventos::factory()->count(3),'eventosOrganizados')
+        ->hasAttached(Eventos::factory()->count(3),
+        [],
+        'asistentes')
+        ->create();
+
+        
     }
 }

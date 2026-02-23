@@ -4,12 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Especies extends Model
 {
     use HasFactory;
-
-    // Nombre de la tabla si no sigue la convención plural
+    public $timestamps = false;
     protected $table = 'especies';
 
     protected $fillable = [
@@ -21,5 +21,15 @@ class Especies extends Model
         'foto_especie',
         'beneficios',
     ];
+
+    
+    public function eventos(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Eventos::class, 
+            'eventos_especies', 
+            'id_especie', 
+            'id_evento'
+        );
+    }
 }
-?>
