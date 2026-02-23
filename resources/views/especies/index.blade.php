@@ -48,6 +48,13 @@
                                 </a>
                             @endif
                         </td>
+                        <td style="padding: 8px; border: 1px solid #ddd;">
+                            <form action="{{ route('especies.destroy', $especie->id) }}" method="post">
+                                @method('DELETE')
+                                @csrf
+                                <button type="submit">Eliminar</button>
+                            </form>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>

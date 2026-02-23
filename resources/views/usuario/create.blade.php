@@ -10,7 +10,7 @@
     @include ('nav')
         <div class="contenedor">
             <h1>Registrar usuario</h1>
-            <form action="{{ route(name: 'usuario.store') }}" method="POST">
+            <form action="{{ route(name: 'usuarios.store') }}" method="POST">
                 @csrf
 
                 <label for="nombre">Nombre: </label><br>

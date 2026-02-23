@@ -54,6 +54,13 @@
                         <small><strong>Tipo:</strong> {{ $evento->tipo_evento }}</small><br>
                         <small><strong>Suelo:</strong> {{ $evento->tipo_terreno }}</small>
                     </td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">
+                        <form action="{{ route('eventos.destroy', $evento->id) }}" method="post">
+                            @method('DELETE')
+                            @csrf
+                            <button type="submit">Eliminar</button>
+                        </form>
+                    </td>
                 </tr>
             @endforeach
         </tbody>

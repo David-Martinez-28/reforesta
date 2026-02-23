@@ -38,8 +38,13 @@
                         {{ $usuario->karma }}
                     </td>
                     <td style="padding: 8px; border: 1px solid #ddd;">{{ $usuario->tipo ?? 'User' }}</td>
-
-
+                    <td style="padding: 8px; border: 1px solid #ddd;">
+                        <form action="{{ route('usuarios.destroy', $usuario->id) }}" method="post">
+                            @method('DELETE')
+                            @csrf
+                            <button type="submit">Eliminar</button>
+                        </form>
+                    </td>
                 </tr>
             @endforeach
         </tbody>

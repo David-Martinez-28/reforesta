@@ -72,6 +72,7 @@ class EventosController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Eventos::findOrFail($id)->delete();
+        return redirect('usuario');
     }
 }
