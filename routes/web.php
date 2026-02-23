@@ -12,3 +12,5 @@ Route::resource('especies',EspeciesController::class);
 Route::get('login', [UsuariosController::class, 'loginForm'])->name('login');
 Route::post('login', [UsuariosController::class, 'login']);
 Route::get('logout', [UsuariosController::class, 'logout'])->name('logout');
+Route::get('/eventos', [EventosController::class, 'index'])->middleware('auth');
+Route::get('/usuarios/{id}', [UsuariosController::class, 'show'])->name('usuarios.show');

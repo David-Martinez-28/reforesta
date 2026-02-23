@@ -62,6 +62,7 @@
                             </button>
                         </form>
                     </td>
+                    <td style="padding: 8px; border: 1px solid #ddd;"><a href="{{ url(path: 'usuarios/' . $usuario->id) }}">Ver detalles</a></td>
                 </tr>
             @endforeach
         </tbody>

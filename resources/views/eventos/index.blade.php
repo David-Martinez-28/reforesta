@@ -2,7 +2,11 @@
     @include('nav')
     @if(auth()->check())
     @endif
-    <table style="width: 100%; border-collapse: collapse; font-family: sans-serif; margin-top: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+    <nav>
+    
+</nav>
+    <table
+        style="width: 100%; border-collapse: collapse; font-family: sans-serif; margin-top: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
         <thead>
             <tr style="background-color: #27ae60; color: white; text-align: left;">
                 <th style="padding: 12px; border: 1px solid #ddd;">ID</th>
@@ -60,6 +64,9 @@
                             @csrf
                             <button type="submit">Eliminar</button>
                         </form>
+                    </td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">
+                        <a href="{{ url(path: 'eventos/' . $evento->id) }}">Ver detalles</a>
                     </td>
                 </tr>
             @endforeach

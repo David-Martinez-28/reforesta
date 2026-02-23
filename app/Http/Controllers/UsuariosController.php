@@ -31,10 +31,10 @@ class UsuariosController extends Controller
      */
     public function store(UsuarioPost $request)
     {
-       
+
         $datos = $request->validated();
 
-        
+
         if ($request->hasFile('avatar')) {
             $ruta = $request->file('avatar')->store('avatars', 'public');
             $datos['avatar'] = $ruta;
@@ -46,8 +46,8 @@ class UsuariosController extends Controller
             'nombre' => $datos['nombre'],
             'nick' => $datos['nick'],
             'email' => $datos['email'],
-            'password' => bcrypt($request->password), 
-            'ubicacion' => $request->ubicacion,      
+            'password' => bcrypt($request->password),
+            'ubicacion' => $request->ubicacion,
             'karma' => $request->karma ?? 0,
             'avatar' => $datos['avatar'],
             'tipo' => $request->tipo ?? 'user',
@@ -59,25 +59,43 @@ class UsuariosController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Usuarios $usuario)
+    public function show(string $id)
     {
-        //
+        $usuario = Usuarios::findOrFail($id);
+        return view('usuario.show', compact('usuario'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Usuarios $usuario)
+    public function edit(string $id)
     {
-        //
+        $usuario = Usuarios::findOrFail($id);
+        return view('usuario.edit', compact('usuario'));
     }
-
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Usuarios $usuario)
+    public function update(Request $request, string $id)
     {
-        //
+
+        $usuario = Usuarios::find($id);
+
+        if (filled($usuario)) {
+            $usuario->update([
+                'nombre' => $request->nombre,
+                'nick' => $request->nick,
+                'email' => $request->email,
+                'password' => $request->password,
+                'ubicacion' => $request->ubicacion,
+                'karma' => $request->karma,
+                'avatar' => $request->avatar,
+                'tipo' => $request->tipo,
+            ]);
+
+        }
+
+        return redirect()->route('usuario.index');
     }
 
     /**
@@ -97,18 +115,33 @@ class UsuariosController extends Controller
 
     public function login(Request $request)
     {
-        $credenciales = $request->only('login', 'password');
+        $request->validate([
+            'login' => 'required|email', 
+            'password' => 'required',
+        ]);
 
+        $credenciales = [
+            'email' => $request->login,
+            'password' => $request->password
+        ];
+
+       
         if (Auth::attempt($credenciales)) {
+            
+            $request->session()->regenerate();
+
             return redirect()->route('eventos.index');
-        } else {
-            $error = 'Usuario incorrecto';
-            return view('auth.login', compact('error'));
         }
+
+
+        return back()->withErrors([
+            'error' => 'El correo electrónico o la contraseña son incorrectos.',
+        ])->withInput($request->only('login'));
     }
     public function logout()
     {
         Auth::logout();
+        return redirect()->back();
 
     }
 }

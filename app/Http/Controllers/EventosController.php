@@ -48,7 +48,8 @@ class EventosController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $evento = Eventos::findOrFail($id);
+        return view('eventos.show', compact('evento'));
     }
 
     /**
@@ -56,17 +57,32 @@ class EventosController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $eventos = Eventos::findOrFail($id);
+        return view('eventos.edit', compact('eventos'));
     }
-
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
     {
-        //
-    }
 
+        $eventos = Eventos::find($id);
+
+        if (filled($eventos)) {
+            $eventos->update([
+                'nombre' => $request->nombre,
+                'descripcion' => $request->descripcion,
+                'ubicacion' => $request->ubicacion,
+                'fecha' => $request->fecha,
+                'tipo_terreno' => $request->tipo_terreno,
+                'tipo_evento' => $request->tipo_evento,
+                'imagen' => $request->imagen,
+            ]);
+
+        }
+
+        return redirect()->route('eventos.index');
+    }
     /**
      * Remove the specified resource from storage.
      */
