@@ -23,7 +23,7 @@
                 <input type="text" name="email" class="email"><br><br>
 
                 <label for="password">Contraseña: </label><br>
-                <input type="password" name="nick" class="nick"><br><br>
+                <input type="password" name="password" class="password"><br><br>
 
                 <label for="ubicacion">Ubicación: </label><br>
                 <input type="text" name="ubicacion" class="ubicacion"><br><br>

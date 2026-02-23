@@ -57,15 +57,31 @@ class EspeciesController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $especies = Especies::findOrFail($id);
+        return view('especies.edit', compact('especies'));
     }
-
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
     {
-        //
+
+        $especies = Especies::find($id);
+
+        if (filled($especies)) {
+            $especies->update([
+                'nombre_cientifico' => $request->nombre_cientifico,
+                'tiempo_para_adultez' => $request->tiempo_para_adultez,
+                'region_origen' => $request->region_origen,
+                'clima' => $request->clima,
+                'enlace_descripcion' => $request->enlace_descripcion,
+                'foto_especie' => $request->foto_especie,
+                'beneficios' => $request->beneficios,
+            ]);
+
+        }
+
+        return redirect()->route('especies.index');
     }
 
     /**
