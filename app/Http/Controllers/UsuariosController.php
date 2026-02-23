@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Usuarios;
+use Auth;
 use Illuminate\Http\Request;
 
 class UsuariosController extends Controller
@@ -12,8 +13,8 @@ class UsuariosController extends Controller
      */
     public function index()
     {
-       $usuarios = Usuarios::all();
-       return view("usuario.index", compact("usuarios"));
+        $usuarios = Usuarios::all();
+        return view("usuario.index", compact("usuarios"));
     }
 
     /**
@@ -62,5 +63,28 @@ class UsuariosController extends Controller
     public function destroy(Usuario $usuario)
     {
         //
+    }
+
+    public function loginForm()
+    {
+        return view('auth.login');
+    }
+
+
+    public function login(Request $request)
+    {
+        $credenciales = $request->only('login', 'password');
+
+        if (Auth::attempt($credenciales)) {
+            return redirect()->route('eventos.index');
+        } else {
+            $error = 'Usuario incorrecto';
+            return view('auth.login', compact('error'));
+        }
+    }
+    public function logout()
+    {
+        Auth::logout();
+
     }
 }
