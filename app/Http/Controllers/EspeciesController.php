@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Especies;
 use Illuminate\Http\Request;
 
 class EspeciesController extends Controller
@@ -11,7 +12,9 @@ class EspeciesController extends Controller
      */
     public function index()
     {
-        //
+        $especies = Especies::all();
+       return view("especies.index", compact("especies"));
+    
     }
 
     /**
