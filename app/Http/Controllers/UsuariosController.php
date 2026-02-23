@@ -22,7 +22,7 @@ class UsuariosController extends Controller
      */
     public function create()
     {
-        //
+        return view('usuario.create');
     }
 
     /**
@@ -30,13 +30,24 @@ class UsuariosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Usuarios::create([
+            'nombre' => $request->nombre,
+            'nick' => $request->nick,
+            'email' => $request->email,
+            'password' => $request->password,
+            'ubicacion' => $request->ubicacion,
+            'karma' => $request->karma,
+            'avatar' => $request->avatar,
+            'tipo' => $request->tipo,
+        ]);
+
+        return redirect()->route('usuario.index')->with('success', 'Usuario creado correctamente');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Usuario $usuario)
+    public function show(Usuarios $usuario)
     {
         //
     }
@@ -44,7 +55,7 @@ class UsuariosController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Usuario $usuario)
+    public function edit(Usuarios $usuario)
     {
         //
     }
@@ -52,7 +63,7 @@ class UsuariosController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Usuario $usuario)
+    public function update(Request $request, Usuarios $usuario)
     {
         //
     }
@@ -60,9 +71,10 @@ class UsuariosController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Usuario $usuario)
+    public function destroy(string $id)
     {
-        //
+        Usuarios::findOrFail($id)->delete();
+        return redirect('usuario');
     }
 
     public function loginForm()

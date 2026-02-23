@@ -29,11 +29,12 @@
                         <span style="font-weight: bold; display: block;">{{ $evento->nombre }}</span>
                         <small style="color: #7f8c8d;">Anfitrión: #{{ $evento->id_anfitrion }}</small>
                     </td>
-                    
+
                     <td style="padding: 10px; border: 1px solid #ddd;">
                         @if($evento->especies->count() > 0)
                             @foreach($evento->especies as $especie)
-                                <div style="display: flex; align-items: center; margin-bottom: 4px; background: #f0f9f4; padding: 4px; border-radius: 4px; border-left: 3px solid #2ecc71;">
+                                <div
+                                    style="display: flex; align-items: center; margin-bottom: 4px; background: #f0f9f4; padding: 4px; border-radius: 4px; border-left: 3px solid #2ecc71;">
                                     <span style="font-size: 0.85em; color: #27ae60; font-style: italic;">
                                         🌿 {{ $especie->nombre_cientifico }}
                                     </span>
@@ -51,6 +52,13 @@
                     <td style="padding: 10px; border: 1px solid #ddd;">
                         <small><strong>Tipo:</strong> {{ $evento->tipo_evento }}</small><br>
                         <small><strong>Suelo:</strong> {{ $evento->tipo_terreno }}</small>
+                    </td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">
+                        <form action="{{ route('eventos.destroy', $evento->id) }}" method="post">
+                            @method('DELETE')
+                            @csrf
+                            <button type="submit">Eliminar</button>
+                        </form>
                     </td>
                 </tr>
             @endforeach
