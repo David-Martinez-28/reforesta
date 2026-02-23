@@ -34,7 +34,7 @@ class UsuariosController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Usuario $usuario)
+    public function show(Usuarios $usuario)
     {
         //
     }
@@ -42,7 +42,7 @@ class UsuariosController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Usuario $usuario)
+    public function edit(Usuarios $usuario)
     {
         //
     }
@@ -50,7 +50,7 @@ class UsuariosController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Usuario $usuario)
+    public function update(Request $request, Usuarios $usuario)
     {
         //
     }
@@ -58,7 +58,7 @@ class UsuariosController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Usuario $usuario)
+    public function destroy(Usuarios $usuario)
     {
         //
     }

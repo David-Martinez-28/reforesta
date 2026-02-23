@@ -25,7 +25,7 @@ class Eventos extends Model
      */
     public function anfitrion(): BelongsTo
     {
-        return $this->belongsTo(Usuario::class, 'id_anfitrion');
+        return $this->belongsTo(Usuarios::class, 'id_anfitrion');
     }
 }
 ?>
