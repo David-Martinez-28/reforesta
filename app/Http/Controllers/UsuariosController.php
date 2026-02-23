@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Usuarios;
 use Auth;
 use Illuminate\Http\Request;
+use App\Http\Requests\UsuarioPost;
 
 class UsuariosController extends Controller
 {
@@ -28,20 +29,31 @@ class UsuariosController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(UsuarioPost $request)
     {
+       
+        $datos = $request->validated();
+
+        
+        if ($request->hasFile('avatar')) {
+            $ruta = $request->file('avatar')->store('avatars', 'public');
+            $datos['avatar'] = $ruta;
+        } else {
+            $datos['avatar'] = null;
+        }
+
         Usuarios::create([
-            'nombre' => $request->nombre,
-            'nick' => $request->nick,
-            'email' => $request->email,
-            'password' => $request->password,
-            'ubicacion' => $request->ubicacion,
-            'karma' => $request->karma,
-            'avatar' => $request->avatar,
-            'tipo' => $request->tipo,
+            'nombre' => $datos['nombre'],
+            'nick' => $datos['nick'],
+            'email' => $datos['email'],
+            'password' => bcrypt($request->password), 
+            'ubicacion' => $request->ubicacion,      
+            'karma' => $request->karma ?? 0,
+            'avatar' => $datos['avatar'],
+            'tipo' => $request->tipo ?? 'user',
         ]);
 
-        return redirect()->route('usuario.index')->with('success', 'Usuario creado correctamente');
+        return redirect()->route('usuarios.index')->with('success', '¡Usuario creado con ubicación y avatar!');
     }
 
     /**
@@ -74,7 +86,7 @@ class UsuariosController extends Controller
     public function destroy(string $id)
     {
         Usuarios::findOrFail($id)->delete();
-        return redirect('usuario');
+        return redirect('usuarios');
     }
 
     public function loginForm()
