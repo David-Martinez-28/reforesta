@@ -2,12 +2,11 @@
     @include('nav')
     @if(auth()->check())
     @endif
-<<<<<<< HEAD
+
     <nav>
     
 </nav>
-=======
->>>>>>> 7f30052b042bf9ca6081e4f367de7595b14241c4
+
     <table
         style="width: 100%; border-collapse: collapse; font-family: sans-serif; margin-top: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
         <thead>
