@@ -1,8 +1,7 @@
 <div style="overflow-x: auto;">
-    @include ('nav')
-
-    <table
-        style="width: 100%; border-collapse: collapse; font-family: sans-serif; margin-top: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+    @if(auth()->check())
+    @endif
+    <table style="width: 100%; border-collapse: collapse; font-family: sans-serif; margin-top: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
         <thead>
             <tr style="background-color: #27ae60; color: white; text-align: left;">
                 <th style="padding: 12px; border: 1px solid #ddd;">ID</th>

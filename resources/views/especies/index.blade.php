@@ -1,50 +1,54 @@
-<div>
-    @include ('nav')
-
+<div style="margin-top: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden;">
     <div style="overflow-x: auto;">
-        <table
-            style="width: 100%; border-collapse: collapse; font-family: 'Segoe UI', sans-serif; margin-top: 20px; background: #fff; border-radius: 8px; overflow: hidden;">
+        <table style="width: 100%; border-collapse: collapse; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #fff;">
             <thead>
                 <tr style="background-color: #2c3e50; color: white; text-align: left;">
-                    <th style="padding: 15px; border: 1px solid #34495e;">ID</th>
-                    <th style="padding: 15px; border: 1px solid #34495e;">Especie</th>
-                    <th style="padding: 15px; border: 1px solid #34495e;">Origen & Clima</th>
-                    <th style="padding: 15px; border: 1px solid #34495e;">Maduración</th>
-                    <th style="padding: 15px; border: 1px solid #34495e;">Beneficios</th>
-                    <th style="padding: 15px; border: 1px solid #34495e; text-align: center;">Acciones</th>
+                    <th style="padding: 15px; border-bottom: 2px solid #27ae60;">ID</th>
+                    <th style="padding: 15px; border-bottom: 2px solid #27ae60;">Especie</th>
+                    <th style="padding: 15px; border-bottom: 2px solid #27ae60;">Origen & Clima</th>
+                    <th style="padding: 15px; border-bottom: 2px solid #27ae60;">Maduración</th>
+                    <th style="padding: 15px; border-bottom: 2px solid #27ae60;">Beneficios</th>
+                    <th style="padding: 15px; border-bottom: 2px solid #27ae60; text-align: center;">Ficha</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($especies as $especie)
-                    <tr style="border-bottom: 1px solid #eee; transition: background 0.3s;"
-                        onmouseover="this.style.backgroundColor='#f9f9f9'"
-                        onmouseout="this.style.backgroundColor='transparent'">
-                        <td style="padding: 12px; text-align: center; color: #7f8c8d;">{{ $especie->id }}</td>
+                    <tr style="border-bottom: 1px solid #eee; transition: background 0.3s;" onmouseover="this.style.backgroundColor='#f1f9f4'" onmouseout="this.style.backgroundColor='transparent'">
+                        <td style="padding: 12px; text-align: center; color: #95a5a6; font-weight: bold;">
+                            {{ $especie->id }}
+                        </td>
                         <td style="padding: 12px;">
                             <div style="display: flex; align-items: center;">
-                                <img src="{{ $especie->foto_especie ? asset('storage/' . $especie->foto_especie) : asset('images/placeholder-tree.png') }}"
-                                    style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; margin-right: 15px; border: 2px solid #ecf0f1;">
-                                <span
-                                    style="font-weight: 600; font-style: italic; color: #27ae60;">{{ $especie->nombre_cientifico }}</span>
+                                {{-- Lógica para detectar si es URL de Faker o archivo local --}}
+                                @php
+                                    $urlImagen = Str::startsWith($especie->foto_especie, 'http') 
+                                        ? $especie->foto_especie 
+                                        : asset('storage/' . $especie->foto_especie);
+                                @endphp
+                                <img src="{{ $especie->foto_especie ? $urlImagen : asset('images/placeholder.png') }}"
+                                     style="width: 45px; height: 45px; border-radius: 8px; object-fit: cover; margin-right: 12px; border: 1px solid #ddd;">
+                                <span style="font-weight: 600; color: #27ae60; font-style: italic;">
+                                    {{ $especie->nombre_cientifico }}
+                                </span>
                             </div>
                         </td>
                         <td style="padding: 12px;">
-                            <small style="display: block; color: #34495e;">🌍
-                                {{ $especie->region_origen ?? 'Desconocida' }}</small>
-                            <small style="display: block; color: #2980b9;">☁️
-                                {{ $especie->clima ?? 'No especificado' }}</small>
+                            <div style="font-size: 0.9em; color: #34495e;">📍 {{ $especie->region_origen }}</div>
+                            <div style="font-size: 0.8em; color: #7f8c8d;">☁️ {{ $especie->clima }}</div>
                         </td>
-                        <td style="padding: 12px; font-size: 0.9em;">
-                            ⏳ {{ $especie->tiempo_para_adultez ?? 'N/A' }}
+                        <td style="padding: 12px;">
+                            <span style="background: #e8f5e9; color: #2e7d32; padding: 4px 8px; border-radius: 4px; font-size: 0.85em; font-weight: 500;">
+                                ⏳ {{ $especie->tiempo_para_adultez }}
+                            </span>
                         </td>
-                        <td style="padding: 12px; font-size: 0.85em; max-width: 200px; color: #555;">
-                            {{ Str::limit($especie->beneficios, 60) }}
+                        <td style="padding: 12px; font-size: 0.85em; color: #555; max-width: 250px;">
+                            {{ Str::limit($especie->beneficios, 70) }}
                         </td>
                         <td style="padding: 12px; text-align: center;">
                             @if($especie->enlace_descripcion)
-                                <a href="{{ $especie->enlace_descripcion }}" target="_blank"
-                                    style="text-decoration: none; color: #3498db; font-size: 1.2em;" title="Ver ficha técnica">
-                                    📄
+                                <a href="{{ $especie->enlace_descripcion }}" target="_blank" 
+                                   style="display: inline-block; padding: 6px 10px; background: #3498db; color: white; border-radius: 4px; text-decoration: none; font-size: 0.8em;">
+                                   Ver más
                                 </a>
                             @endif
                         </td>

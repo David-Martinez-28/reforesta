@@ -34,7 +34,6 @@ class Usuarios extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'karma' => 'integer',
         ];
     }
 
@@ -48,10 +47,10 @@ class Usuarios extends Authenticatable
     public function eventosAsistidos(): BelongsToMany
     {
         return $this->belongsToMany(
-            Eventos::class,      // Modelo relacionado
-            'usuarios_eventos',  // Tabla pivote
-            'id_usuario',        // FK de este modelo en la pivote
-            'id_evento'          // FK del modelo relacionado en la pivote
+            Eventos::class,      
+            'usuarios_eventos',  
+            'id_usuario',       
+            'id_evento'          
         );
     }
 }
