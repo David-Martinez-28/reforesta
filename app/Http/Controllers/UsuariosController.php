@@ -31,13 +31,12 @@ class UsuariosController extends Controller
      */
     public function store(UsuarioPost $request)
     {
-       
         $datos = $request->validated();
 
-        
         if ($request->hasFile('avatar')) {
-            $ruta = $request->file('avatar')->store('avatars', 'public');
-            $datos['avatar'] = $ruta;
+            $datos['avatar'] = $request->file('avatar')->store('avatars', 'public');
+        } elseif ($request->filled('avatar_url')) {
+            $datos['avatar'] = $request->input('avatar_url');
         } else {
             $datos['avatar'] = null;
         }
@@ -46,14 +45,14 @@ class UsuariosController extends Controller
             'nombre' => $datos['nombre'],
             'nick' => $datos['nick'],
             'email' => $datos['email'],
-            'password' => bcrypt($request->password), 
-            'ubicacion' => $request->ubicacion,      
+            'password' => bcrypt($request->password),
+            'ubicacion' => $request->ubicacion,
             'karma' => $request->karma ?? 0,
             'avatar' => $datos['avatar'],
             'tipo' => $request->tipo ?? 'user',
         ]);
 
-        return redirect()->route('usuarios.index')->with('success', '¡Usuario creado con ubicación y avatar!');
+        return redirect()->route('usuarios.index')->with('success', '¡Usuario creado correctamente!');
     }
 
     /**
@@ -115,18 +114,33 @@ class UsuariosController extends Controller
 
     public function login(Request $request)
     {
-        $credenciales = $request->only('login', 'password');
+        $request->validate([
+            'login' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        $credenciales = [
+            'email' => $request->login,
+            'password' => $request->password
+        ];
+
 
         if (Auth::attempt($credenciales)) {
+
+            $request->session()->regenerate();
+
             return redirect()->route('eventos.index');
-        } else {
-            $error = 'Usuario incorrecto';
-            return view('auth.login', compact('error'));
         }
+
+
+        return back()->withErrors([
+            'error' => 'El correo electrónico o la contraseña son incorrectos.',
+        ])->withInput($request->only('login'));
     }
     public function logout()
     {
         Auth::logout();
+        return redirect()->back();
 
     }
 }
