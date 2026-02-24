@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Usuarios;
 use Auth;
 use Illuminate\Http\Request;
+use App\Http\Requests\UsuarioPost;
 
 class UsuariosController extends Controller
 {
@@ -28,20 +29,30 @@ class UsuariosController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(UsuarioPost $request)
     {
+        $datos = $request->validated();
+
+        if ($request->hasFile('avatar')) {
+            $datos['avatar'] = $request->file('avatar')->store('avatars', 'public');
+        } elseif ($request->filled('avatar_url')) {
+            $datos['avatar'] = $request->input('avatar_url');
+        } else {
+            $datos['avatar'] = null;
+        }
+
         Usuarios::create([
-            'nombre' => $request->nombre,
-            'nick' => $request->nick,
-            'email' => $request->email,
-            'password' => $request->password,
+            'nombre' => $datos['nombre'],
+            'nick' => $datos['nick'],
+            'email' => $datos['email'],
+            'password' => bcrypt($request->password),
             'ubicacion' => $request->ubicacion,
-            'karma' => $request->karma,
-            'avatar' => $request->avatar,
-            'tipo' => $request->tipo,
+            'karma' => $request->karma ?? 0,
+            'avatar' => $datos['avatar'],
+            'tipo' => $request->tipo ?? 'user',
         ]);
 
-        return redirect()->route('usuario.index')->with('success', 'Usuario creado correctamente');
+        return redirect()->route('usuarios.index')->with('success', '¡Usuario creado correctamente!');
     }
 
     /**
@@ -92,7 +103,7 @@ class UsuariosController extends Controller
     public function destroy(string $id)
     {
         Usuarios::findOrFail($id)->delete();
-        return redirect('usuario');
+        return redirect('usuarios');
     }
 
     public function loginForm()
@@ -103,18 +114,33 @@ class UsuariosController extends Controller
 
     public function login(Request $request)
     {
-        $credenciales = $request->only('login', 'password');
+        $request->validate([
+            'login' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        $credenciales = [
+            'email' => $request->login,
+            'password' => $request->password
+        ];
+
 
         if (Auth::attempt($credenciales)) {
+
+            $request->session()->regenerate();
+
             return redirect()->route('eventos.index');
-        } else {
-            $error = 'Usuario incorrecto';
-            return view('auth.login', compact('error'));
         }
+
+
+        return back()->withErrors([
+            'error' => 'El correo electrónico o la contraseña son incorrectos.',
+        ])->withInput($request->only('login'));
     }
     public function logout()
     {
         Auth::logout();
+        return redirect()->back();
 
     }
 
