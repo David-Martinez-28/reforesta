@@ -1,8 +1,7 @@
 <nav style="display: flex; align-items: center; gap: 15px; padding: 10px; background: #f8f9fa;">
-    <a href="{{ url('/eventos') }}">Inicio</a>
+    <a href="{{ url('/') }}">Inicio</a>
     <a href="{{ url('/usuarios') }}">Usuarios</a>
     <a href="{{ url('/especies') }}">Especies</a>
-    <a href="{{ url('/usuarios/create') }}">Crear Usuario</a>
     <a href="{{ url('/eventos/create') }}">Crear Eventos</a>
 
     <div style="border-left: 1px solid #ccc; height: 20px; margin: 0 10px;"></div>
@@ -38,6 +37,12 @@
         <a href="{{ route('login') }}"
             style="background: #28a745; color: white; padding: 5px 15px; border-radius: 4px; text-decoration: none;">
             Iniciar Sesión
+        </a>
+    @endguest
+    @guest
+        <a href="{{ route('usuarios.create') }}"
+            style="background: red; color: white; padding: 5px 15px; border-radius: 4px; text-decoration: none;">
+            Registrarse
         </a>
     @endguest
 

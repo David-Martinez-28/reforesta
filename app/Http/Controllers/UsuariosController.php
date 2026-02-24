@@ -77,24 +77,21 @@ class UsuariosController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $usuario = Usuarios::findOrFail($id);
 
-        $usuario = Usuarios::find($id);
+        $usuario->update([
+            'nombre' => $request->nombre,
+            'nick' => $request->nick,
+            'email' => $request->email,
+            // Importante: Encripta la password si se cambia, o mantenla si viene vacía
+            'password' => $request->filled('password') ? bcrypt($request->password) : $usuario->password,
+            'ubicacion' => $request->ubicacion,
+            'karma' => $request->karma,
+            'avatar' => $request->avatar,
+            'tipo' => $request->tipo,
+        ]);
 
-        if (filled($usuario)) {
-            $usuario->update([
-                'nombre' => $request->nombre,
-                'nick' => $request->nick,
-                'email' => $request->email,
-                'password' => $request->password,
-                'ubicacion' => $request->ubicacion,
-                'karma' => $request->karma,
-                'avatar' => $request->avatar,
-                'tipo' => $request->tipo,
-            ]);
-
-        }
-
-        return redirect()->route('usuario.index');
+        return redirect()->route('usuarios.index'); // Corregido a plural
     }
 
     /**
@@ -144,10 +141,32 @@ class UsuariosController extends Controller
 
     }
 
-    public function unirse(Usuarios $usuario)
+    public function unirse(Request $request)
     {
-        $usuario->increment('karma');
+        $usuario = auth()->user();
+        if ($usuario) {
+            $usuario->eventos()->syncWithoutDetaching([$request->evento_id]);
 
-        return redirect()->route('usuario.index')->with('success', '¡Te has unido al evento y el karma ha subido!');
+            $usuario->increment('karma', 3);
+            return back()->with('success', '¡Te has unido!');
+        }
+    }
+    public function desunirse(Request $request)
+    {
+        $usuario = auth()->user();
+
+        if ($usuario) {
+            // 1. Eliminamos la relación en la tabla intermedia 'usuarios_eventos'
+            $usuario->eventos()->detach($request->evento_id);
+
+            // 2. Opcional: Restar el karma que ganó al unirse (para mantener el equilibrio)
+            if ($usuario->karma >= 3) {
+                $usuario->decrement('karma', 3);
+            }
+
+            return back()->with('success', 'Has abandonado el evento y se han descontado 3 puntos de karma.');
+        }
+
+        return redirect()->route('login');
     }
 }
