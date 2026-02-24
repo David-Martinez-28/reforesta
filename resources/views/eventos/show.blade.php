@@ -51,7 +51,6 @@
         <hr>
 
         <div style="display: flex; gap: 40px;">
-            {{-- Información del Evento --}}
             <div style="flex: 1;">
                 <p><strong>Descripción:</strong> {{ $evento->descripcion }}</p>
                 <p><strong>📍 Ubicación:</strong> {{ $evento->ubicacion }}</p>
@@ -82,7 +81,6 @@
                 </div>
             </div>
 
-            {{-- Lista de Participantes --}}
             <div style="flex: 1;">
                 <div class="participantes-lista">
                     <h3>Participantes ({{ $evento->asistentes->count() }})</h3>

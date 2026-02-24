@@ -156,10 +156,8 @@ class UsuariosController extends Controller
         $usuario = auth()->user();
 
         if ($usuario) {
-            // 1. Eliminamos la relación en la tabla intermedia 'usuarios_eventos'
             $usuario->eventos()->detach($request->evento_id);
 
-            // 2. Opcional: Restar el karma que ganó al unirse (para mantener el equilibrio)
             if ($usuario->karma >= 3) {
                 $usuario->decrement('karma', 3);
             }

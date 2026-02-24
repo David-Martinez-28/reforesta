@@ -22,7 +22,6 @@
                         </td>
                         <td style="padding: 12px;">
                             <div style="display: flex; align-items: center;">
-                                {{-- Lógica para detectar si es URL de Faker o archivo local --}}
                                 @php
                                     $urlImagen = Str::startsWith($especie->foto_especie, 'http')
                                         ? $especie->foto_especie

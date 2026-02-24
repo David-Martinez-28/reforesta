@@ -19,7 +19,12 @@
         <p><strong>Ubicación:</strong> {{ $usuario->ubicacion }}</p>
         <p><strong>Karma:</strong> {{ $usuario->karma }}</p>
         <p><strong>Tipo:</strong> {{ $usuario->tipo }}</p>
-
+        
+        @if (auth()->check() && auth()->id() === $usuario->id)
+            <form action="{{ route('usuarios.edit', $usuario->id) }}" method="GET">
+                <button type="submit">Modificar datos</button>
+            </form>
+        @endif
     @else
         <p>El usuario no existe o ha sido eliminado.</p>
     @endif
