@@ -150,4 +150,5 @@ class UsuariosController extends Controller
 
         return redirect()->route('usuario.index')->with('success', '¡Te has unido al evento y el karma ha subido!');
     }
+
 }
