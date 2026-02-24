@@ -15,20 +15,21 @@ class EventosController extends Controller
      */
     public function index()
     {
-        $eventos = Eventos::with('especies')->get();
+        // Eager loading para evitar errores y lentitud
+        $eventos = Eventos::with(['asistentes', 'especies'])->get();
         return view('eventos.index', compact('eventos'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    
+
     public function create()
     {
-        
+
         $especies = Especies::all();
 
-        
+
         return view('eventos.create', compact('especies'));
     }
 
@@ -49,15 +50,28 @@ class EventosController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function unirse(Request $request)
     {
-        $evento = Eventos::findOrFail($id);
-        return view('eventos.show', compact('evento'));
+        $usuario = auth()->user();
+        if ($usuario) {
+            // MUY IMPORTANTE: El nombre aquí debe ser 'eventos', 
+            // que es como se llama la función en tu modelo Usuarios.
+            $usuario->eventos()->syncWithoutDetaching([$request->evento_id]);
+
+            $usuario->increment('karma', 3);
+            return back()->with('success', '¡Te has unido!');
+        }
     }
 
     /**
      * Show the form for editing the specified resource.
      */
+    public function show($id)
+    {
+        // Cargamos asistentes y especies para que la vista 'show' tenga datos
+        $evento = Eventos::with(['asistentes', 'especies'])->findOrFail($id);
+        return view('eventos.show', compact('evento'));
+    }
     public function edit(string $id)
     {
         $eventos = Eventos::findOrFail($id);
