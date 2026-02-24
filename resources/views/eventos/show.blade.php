@@ -51,7 +51,7 @@
         <hr>
 
         <div style="display: flex; gap: 40px;">
-            {{-- Información del Evento --}}
+           
             <div style="flex: 1;">
                 <p><strong>Descripción:</strong> {{ $evento->descripcion }}</p>
                 <p><strong>📍 Ubicación:</strong> {{ $evento->ubicacion }}</p>
@@ -82,12 +82,22 @@
                 </div>
             </div>
 
-            {{-- Lista de Participantes --}}
             <div style="flex: 1;">
                 <div class="participantes-lista">
                     <h3>Participantes ({{ $evento->asistentes->count() }})</h3>
                     @forelse ($evento->asistentes as $asistente)
-                        <span class="badge-user">👤 {{ $asistente->nombre }} ({{ $asistente->nick }})</span>
+                        <div class="badge-user" style="display: flex; align-items: center; gap: 8px;">
+                            @if($asistente->avatar)
+                                <img src="{{ asset('storage/' . $asistente->avatar) }}" alt="Avatar"
+                                    style="width: 25px; height: 25px; border-radius: 50%; object-fit: cover; border: 1px solid #ddd;">
+                            @else
+                                <div
+                                    style="width: 25px; height: 25px; border-radius: 50%; background: #eee; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #999;">
+
+                                </div>
+                            @endif
+                            <strong>{{ $asistente->nick }}</strong>
+                        </div>
                     @empty
                         <p style="color: #999;">Aún no hay participantes inscritos. ¡Sé el primero!</p>
                     @endforelse

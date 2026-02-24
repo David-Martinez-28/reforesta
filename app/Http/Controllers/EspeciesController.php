@@ -90,6 +90,6 @@ class EspeciesController extends Controller
     public function destroy(string $id)
     {
         Especies::findOrFail($id)->delete();
-        return redirect('usuario');
+        return redirect('especies');
     }
 }
