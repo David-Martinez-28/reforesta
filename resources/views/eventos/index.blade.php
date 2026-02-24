@@ -4,8 +4,8 @@
     @endif
 
     <nav>
-    
-</nav>
+
+    </nav>
 
     <table
         style="width: 100%; border-collapse: collapse; font-family: sans-serif; margin-top: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
@@ -40,12 +40,15 @@
                     <td style="padding: 10px; border: 1px solid #ddd;">
                         @if($evento->especies->count() > 0)
                             @foreach($evento->especies as $especie)
-                                <div
-                                    style="display: flex; align-items: center; margin-bottom: 4px; background: #f0f9f4; padding: 4px; border-radius: 4px; border-left: 3px solid #2ecc71;">
-                                    <span style="font-size: 0.85em; color: #27ae60; font-style: italic;">
-                                        🌿 {{ $especie->nombre_cientifico }}
-                                    </span>
-                                </div>
+                                <a href="{{ route('especies.show', $especie->id) }}"
+                                    style="text-decoration: none; display: block; margin-bottom: 4px;">
+                                    <div style="display: flex; align-items: center; background: #f0f9f4; padding: 4px; border-radius: 4px; border-left: 3px solid #2ecc71; transition: background 0.3s;"
+                                        onmouseover="this.style.background='#e2f3e9'" onmouseout="this.style.background='#f0f9f4'">
+                                        <span style="font-size: 0.85em; color: #27ae60; font-style: italic; font-weight: bold;">
+                                            🌿 {{ $especie->nombre_cientifico }}
+                                        </span>
+                                    </div>
+                                </a>
                             @endforeach
                         @else
                             <span style="color: #bdc3c7; font-size: 0.8em; font-style: italic;">No hay especies asignadas</span>

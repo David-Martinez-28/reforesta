@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EventosPost;
+use App\Models\Especies;
 use App\Models\Eventos;
 use Illuminate\Http\Request;
+use App\Models\Usuarios;
 
 class EventosController extends Controller
 {
@@ -19,28 +22,28 @@ class EventosController extends Controller
     /**
      * Show the form for creating a new resource.
      */
+    
     public function create()
     {
-        return view(view: 'eventos.create');
+        
+        $especies = Especies::all();
+
+        
+        return view('eventos.create', compact('especies'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(EventosPost $request)
     {
-        Eventos::create([
-            'nombre' => $request->nombre,
-            'descripcion' => $request->descripcion,
-            'ubicacion' => $request->ubicacion,
-            'fecha' => $request->fecha,
-            'tipo_terreno' => $request->tipo_terreno,
-            'tipo_evento' => $request->tipo_evento,
-            'imagen' => $request->imagen,
-        ]);
 
-        return redirect()->route('eventos.index')->with('success', 'Evento creado correctamente');
+        $datos = $request->validated();
 
+        auth()->user()->eventosOrganizados()->create($datos);
+
+        return redirect()->route('eventos.index')
+            ->with('success', 'Evento creado correctamente.');
     }
 
     /**
@@ -89,6 +92,6 @@ class EventosController extends Controller
     public function destroy(string $id)
     {
         Eventos::findOrFail($id)->delete();
-        return redirect('usuario');
+        return redirect('eventos');
     }
 }
