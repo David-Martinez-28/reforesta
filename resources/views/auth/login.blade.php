@@ -1,5 +1,5 @@
 <div>
-
+        @include('nav')
         <h1>Login</h1>
 
         <form action="{{ route('login') }}" method="POST">
@@ -19,6 +19,7 @@
             <input type="submit" name="enviar" value="Enviar" class="btn btn-dark btn-block">
 
         </form>
+        
 
    
 
