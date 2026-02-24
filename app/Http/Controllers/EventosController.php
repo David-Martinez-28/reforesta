@@ -54,8 +54,6 @@ class EventosController extends Controller
     {
         $usuario = auth()->user();
         if ($usuario) {
-            // MUY IMPORTANTE: El nombre aquí debe ser 'eventos', 
-            // que es como se llama la función en tu modelo Usuarios.
             $usuario->eventos()->syncWithoutDetaching([$request->evento_id]);
 
             $usuario->increment('karma', 3);
@@ -68,7 +66,6 @@ class EventosController extends Controller
      */
     public function show($id)
     {
-        // Cargamos asistentes y especies para que la vista 'show' tenga datos
         $evento = Eventos::with(['asistentes', 'especies'])->findOrFail($id);
         return view('eventos.show', compact('evento'));
     }

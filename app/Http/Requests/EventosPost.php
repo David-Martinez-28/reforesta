@@ -22,10 +22,8 @@ class EventosPost extends FormRequest
     public function rules(): array
     {
         return [
-            // 'nombre' es UNIQUE en tu tabla
             'nombre' => 'required|string|max:255|unique:eventos,nombre',
 
-            // Estos son NULLABLE (YES) en tu tabla
             'descripcion' => 'nullable|string|max:255',
             'ubicacion' => 'nullable|string|max:255',
             'fecha' => 'nullable|date',
@@ -33,7 +31,6 @@ class EventosPost extends FormRequest
             'tipo_evento' => 'nullable|string|max:255',
             'imagen' => 'nullable|string|max:255',
 
-            // id_anfitrion no se pide en el formulario, se asigna en el controlador
         ];
     }
 

@@ -96,7 +96,6 @@
         <form action="{{ route('usuarios.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
-            {{-- Datos Personales --}}
             <label for="nombre">Nombre Completo</label>
             <input type="text" name="nombre" id="nombre" value="{{ old('nombre') }}" placeholder="Ej: Juan Pérez">
             @error('nombre') <span class="error">{{ $message }}</span> @enderror

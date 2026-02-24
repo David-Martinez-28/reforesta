@@ -33,25 +33,20 @@ class UsuarioPost extends FormRequest
     public function messages(): array
     {
         return [
-            // Mensajes para el campo Nombre
             'nombre.required' => 'El nombre es obligatorio.',
             'nombre.max' => 'El nombre no puede tener más de 255 caracteres.',
 
-            // Mensajes para el campo Nick
             'nick.required' => 'El nickname es obligatorio.',
             'nick.unique' => 'Este nickname ya está siendo utilizado por otro usuario.',
 
-            // Mensajes para el campo Email
             'email.required' => 'El correo electrónico es obligatorio.',
             'email.email' => 'Debes introducir un formato de correo válido.',
             'email.unique' => 'Este correo ya está registrado.',
 
-            // Mensajes para el campo Password (los que pedías)
             'password.required' => 'La contraseña es obligatoria.',
             'password.min' => 'La contraseña debe tener al menos 6 caracteres.',
             'password.confirmed' => 'Las contraseñas no coinciden.',
 
-            // Mensaje para el Avatar
             'avatar.image' => 'El archivo debe ser una imagen (jpg, png, etc.).',
             'avatar.max' => 'La imagen es demasiado pesada (máximo 2MB).',
         ];
