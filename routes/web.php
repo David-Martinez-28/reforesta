@@ -12,4 +12,4 @@ Route::resource('especies',EspeciesController::class);
 Route::get('login', [UsuariosController::class, 'loginForm'])->name('login');
 Route::post('login', [UsuariosController::class, 'login']);
 Route::get('logout', [UsuariosController::class, 'logout'])->name('logout');
-
+Route::patch('unirse', [UsuariosController::class, 'unirse'])->name('usuarios.unirse');

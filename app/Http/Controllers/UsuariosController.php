@@ -117,4 +117,11 @@ class UsuariosController extends Controller
         Auth::logout();
 
     }
+
+    public function unirse(Usuarios $usuario)
+    {
+        $usuario->increment('karma');
+
+        return redirect()->route('usuario.index')->with('success', '¡Te has unido al evento y el karma ha subido!');
+    }
 }

@@ -20,6 +20,12 @@
         <p><strong>Tipo de terreno:</strong> {{ $evento->tipo_terreno }}</p>
         <p><strong>Tipo de evento:</strong> {{ $evento->tipo_evento }}</p>
 
+        <form action="{{ route('usuarios.unirse') }}" method="POST">
+            @csrf
+            @method('PATCH')
+            <button type="submit" class="crear">Unirse al evento</button>
+        </form>
+
     @else
         <p>El evento no existe o ha sido eliminado.</p>
     @endif
