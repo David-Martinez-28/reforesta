@@ -3,8 +3,7 @@
 
     <h2 style="font-family: sans-serif; color: #2c3e50;">Listado de Eventos</h2>
 
-    <table
-        style="width: 100%; border-collapse: collapse; font-family: sans-serif; margin-top: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden;">
+    <table style="width: 100%; border-collapse: collapse; font-family: sans-serif; margin-top: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden;">
         <thead>
             <tr style="background-color: #27ae60; color: white; text-align: left;">
                 <th style="padding: 12px; border: 1px solid #ddd;">ID</th>
@@ -22,11 +21,12 @@
                     onmouseover="this.style.backgroundColor='#f1f8f4'"
                     onmouseout="this.style.backgroundColor='{{ $loop->even ? '#fdfdfd' : '#ffffff' }}'">
 
-
+                    {{-- ID --}}
                     <td style="padding: 10px; border: 1px solid #ddd; text-align: center; font-weight: bold;">
-                        {{ $evento->id }}</td>
+                        {{ $evento->id }}
+                    </td>
 
-
+                    {{-- Imagen del Evento --}}
                     <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
                         @if($evento->imagen)
                             <img src="{{ asset('storage/' . $evento->imagen) }}" alt="Foto"
@@ -36,38 +36,45 @@
                         @endif
                     </td>
 
-
+                    {{-- Nombre y Nick del Anfitrión --}}
                     <td style="padding: 10px; border: 1px solid #ddd;">
                         <span style="font-weight: bold; display: block; color: #2c3e50;">{{ $evento->nombre }}</span>
-                        <small style="color: #7f8c8d;">Anfitrión: <span
-                                style="color: #27ae60;">#{{ $evento->id_anfitrion }}</span></small>
+                        
+                        <div style="display: flex; align-items: center; gap: 8px; margin-top: 5px;">
+                            {{-- Avatar del Anfitrión --}}
+                            @if($evento->anfitrion && $evento->anfitrion->avatar)
+                                <img src="{{ asset('storage/' . $evento->anfitrion->avatar) }}" 
+                                     alt="Avatar" 
+                                     style="width: 24px; height: 24px; border-radius: 50%; object-fit: cover; border: 1px solid #ddd;">
+                            @else
+                                <span style="font-size: 14px;">👤</span>
+                            @endif
+
+                            <small style="color: #7f8c8d;">
+                                Anfitrión: <span style="color: #27ae60; font-weight: bold;">{{ $evento->anfitrion->nick ?? 'N/A' }}</span>
+                            </small>
+                        </div>
                     </td>
 
-
+                    {{-- Contador de Participantes --}}
                     <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
-                        <div style="background: #e8f4fd; color: #2980b9; padding: 5px 12px; border-radius: 20px; font-weight: bold; font-size: 0.9em; display: inline-block;"
-                            title="Usuarios inscritos">
+                        <div style="background: #e8f4fd; color: #2980b9; padding: 5px 12px; border-radius: 20px; font-weight: bold; font-size: 0.9em; display: inline-block;">
                             👤 {{ $evento->asistentes->count() }}
                         </div>
                     </td>
 
-
+                    {{-- Especies --}}
                     <td style="padding: 10px; border: 1px solid #ddd;">
-                        @if($evento->especies->count() > 0)
-                            @foreach($evento->especies as $especie)
-                                <a href="{{ route('especies.show', $especie->id) }}" style="text-decoration: none;">
-                                    <div
-                                        style="font-size: 0.8em; color: #27ae60; background: #f0f9f4; padding: 3px 6px; border-radius: 4px; margin-bottom: 3px; border-left: 3px solid #2ecc71;">
-                                        🌿 {{ $especie->nombre_cientifico }}
-                                    </div>
-                                </a>
-                            @endforeach
-                        @else
-                            <span style="color: #bdc3c7; font-size: 0.8em;">No asignadas</span>
-                        @endif
+                        @foreach($evento->especies as $especie)
+                            <a href="{{ route('especies.show', $especie->id) }}" style="text-decoration: none;">
+                                <div style="font-size: 0.8em; color: #27ae60; background: #f0f9f4; padding: 3px 6px; border-radius: 4px; margin-bottom: 3px; border-left: 3px solid #2ecc71;">
+                                    🌿 {{ $especie->nombre_cientifico }}
+                                </div>
+                            </a>
+                        @endforeach
                     </td>
 
-
+                    {{-- Ubicación --}}
                     <td style="padding: 10px; border: 1px solid #ddd;">
                         <div style="font-size: 0.9em;">📍 {{ $evento->ubicacion ?? 'Pendiente' }}</div>
                         <div style="font-size: 0.85em; color: #7f8c8d;">📅
@@ -75,12 +82,11 @@
                         </div>
                     </td>
 
-
+                    {{-- Acciones --}}
                     <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
                         <div style="display: flex; flex-direction: column; gap: 5px; align-items: center;">
                             <a href="{{ route('eventos.show', $evento->id) }}"
-                                style="text-decoration: none; color: white; background: #3498db; padding: 5px 12px; border-radius: 4px; font-size: 0.85em; width: 80px; text-align: center;">Ver
-                                más</a>
+                                style="text-decoration: none; color: white; background: #3498db; padding: 5px 12px; border-radius: 4px; font-size: 0.85em; width: 80px; text-align: center;">Ver más</a>
 
                             @if(auth()->check() && auth()->id() == $evento->id_anfitrion)
                                 <form action="{{ route('eventos.destroy', $evento->id) }}" method="post"

@@ -38,13 +38,16 @@ class EventosController extends Controller
      */
     public function store(EventosPost $request)
     {
-
         $datos = $request->validated();
 
-        auth()->user()->eventosOrganizados()->create($datos);
+        $evento = auth()->user()->eventosOrganizados()->create($datos);
+
+        if ($request->has('especies')) {
+            $evento->especies()->attach($request->especies);
+        }
 
         return redirect()->route('eventos.index')
-            ->with('success', 'Evento creado correctamente.');
+            ->with('success', 'Evento creado correctamente con sus especies.');
     }
 
     /**
