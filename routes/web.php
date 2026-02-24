@@ -10,6 +10,7 @@ use App\Http\Controllers\UsuariosController;
 Route::get('login', [UsuariosController::class, 'loginForm'])->name('login');
 Route::post('login', [UsuariosController::class, 'login']);
 Route::get('logout', [UsuariosController::class, 'logout'])->name('logout');
+Route::patch('unirse', [UsuariosController::class, 'unirse'])->name('usuarios.unirse');
 
 // Rutas protegidas (Solo usuarios logueados)
 Route::middleware(['auth'])->group(function () {
