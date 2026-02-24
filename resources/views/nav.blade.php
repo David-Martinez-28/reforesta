@@ -3,6 +3,7 @@
     <a href="{{ url('/usuarios') }}">Usuarios</a>
     <a href="{{ url('/especies') }}">Especies</a>
     <a href="{{ url('/usuarios/create') }}">Crear Usuario</a>
+    <a href="{{ url('/eventos/create') }}">Crear Eventos</a>
 
     <div style="border-left: 1px solid #ccc; height: 20px; margin: 0 10px;"></div>
 

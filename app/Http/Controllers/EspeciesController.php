@@ -49,7 +49,7 @@ class EspeciesController extends Controller
     public function show(string $id)
     {
         $especie = Especies::findOrFail($id);
-        return view('especie.show', compact('especie'));
+        return view('especies.show', compact('especie'));
     }
 
     /**
