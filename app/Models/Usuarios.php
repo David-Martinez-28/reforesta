@@ -11,13 +11,13 @@ class Usuarios extends Authenticatable
 {
     use HasFactory, Notifiable;
     public $timestamps = false;
-    protected $table = "usuarios"; 
+    protected $table = "usuarios";
 
     protected $fillable = [
-        'nombre', 
-        'nick', 
-        'email', 
-        'password', 
+        'nombre',
+        'nick',
+        'email',
+        'password',
         'ubicacion',
         'karma',
         'avatar',
@@ -37,20 +37,20 @@ class Usuarios extends Authenticatable
         ];
     }
 
-    
+
     public function eventosOrganizados(): HasMany
     {
         return $this->hasMany(Eventos::class, 'id_anfitrion');
     }
 
-    
-    public function eventosAsistidos(): BelongsToMany
+
+    public function eventos(): BelongsToMany
     {
         return $this->belongsToMany(
-            Eventos::class,      
-            'usuarios_eventos',  
-            'id_usuario',       
-            'id_evento'          
+            Eventos::class,
+            'usuarios_eventos',
+            'id_usuario',
+            'id_evento'
         );
     }
 }

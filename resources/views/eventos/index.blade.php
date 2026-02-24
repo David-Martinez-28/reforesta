@@ -1,77 +1,97 @@
-<div style="overflow-x: auto;">
+<div style="overflow-x: auto; padding: 20px;">
     @include('nav')
-    @if(auth()->check())
-    @endif
 
-    <nav>
-
-    </nav>
+    <h2 style="font-family: sans-serif; color: #2c3e50;">Listado de Eventos</h2>
 
     <table
-        style="width: 100%; border-collapse: collapse; font-family: sans-serif; margin-top: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+        style="width: 100%; border-collapse: collapse; font-family: sans-serif; margin-top: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden;">
         <thead>
             <tr style="background-color: #27ae60; color: white; text-align: left;">
                 <th style="padding: 12px; border: 1px solid #ddd;">ID</th>
                 <th style="padding: 12px; border: 1px solid #ddd;">Imagen</th>
-                <th style="padding: 12px; border: 1px solid #ddd;">Evento</th>
+                <th style="padding: 12px; border: 1px solid #ddd;">Evento / Anfitrión</th>
+                <th style="padding: 12px; border: 1px solid #ddd; text-align: center;">Participantes</th>
                 <th style="padding: 12px; border: 1px solid #ddd;">Especies a Plantar</th>
-                <th style="padding: 12px; border: 1px solid #ddd;">Ubicación</th>
-                <th style="padding: 12px; border: 1px solid #ddd;">Fecha</th>
-                <th style="padding: 12px; border: 1px solid #ddd;">Terreno</th>
+                <th style="padding: 12px; border: 1px solid #ddd;">Ubicación y Fecha</th>
+                <th style="padding: 12px; border: 1px solid #ddd; text-align: center;">Acciones</th>
             </tr>
         </thead>
         <tbody>
             @foreach($eventos as $evento)
-                <tr style="border-bottom: 1px solid #eee; background-color: {{ $loop->even ? '#fdfdfd' : '#ffffff' }};">
-                    <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">{{ $evento->id }}</td>
+                <tr style="border-bottom: 1px solid #eee; background-color: {{ $loop->even ? '#fdfdfd' : '#ffffff' }}; transition: background 0.2s;"
+                    onmouseover="this.style.backgroundColor='#f1f8f4'"
+                    onmouseout="this.style.backgroundColor='{{ $loop->even ? '#fdfdfd' : '#ffffff' }}'">
+
+
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align: center; font-weight: bold;">
+                        {{ $evento->id }}</td>
+
+
                     <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
                         @if($evento->imagen)
                             <img src="{{ asset('storage/' . $evento->imagen) }}" alt="Foto"
-                                style="width: 60px; height: 40px; object-fit: cover; border-radius: 4px;">
+                                style="width: 70px; height: 50px; object-fit: cover; border-radius: 4px; border: 1px solid #eee;">
                         @else
-                            <span style="color: #999; font-size: 11px;">Sin foto</span>
+                            <span style="color: #999; font-size: 11px; font-style: italic;">Sin imagen</span>
                         @endif
                     </td>
+
+
                     <td style="padding: 10px; border: 1px solid #ddd;">
-                        <span style="font-weight: bold; display: block;">{{ $evento->nombre }}</span>
-                        <small style="color: #7f8c8d;">Anfitrión: #{{ $evento->id_anfitrion }}</small>
+                        <span style="font-weight: bold; display: block; color: #2c3e50;">{{ $evento->nombre }}</span>
+                        <small style="color: #7f8c8d;">Anfitrión: <span
+                                style="color: #27ae60;">#{{ $evento->id_anfitrion }}</span></small>
                     </td>
+
+
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
+                        <div style="background: #e8f4fd; color: #2980b9; padding: 5px 12px; border-radius: 20px; font-weight: bold; font-size: 0.9em; display: inline-block;"
+                            title="Usuarios inscritos">
+                            👤 {{ $evento->asistentes->count() }}
+                        </div>
+                    </td>
+
 
                     <td style="padding: 10px; border: 1px solid #ddd;">
                         @if($evento->especies->count() > 0)
                             @foreach($evento->especies as $especie)
-                                <a href="{{ route('especies.show', $especie->id) }}"
-                                    style="text-decoration: none; display: block; margin-bottom: 4px;">
-                                    <div style="display: flex; align-items: center; background: #f0f9f4; padding: 4px; border-radius: 4px; border-left: 3px solid #2ecc71; transition: background 0.3s;"
-                                        onmouseover="this.style.background='#e2f3e9'" onmouseout="this.style.background='#f0f9f4'">
-                                        <span style="font-size: 0.85em; color: #27ae60; font-style: italic; font-weight: bold;">
-                                            🌿 {{ $especie->nombre_cientifico }}
-                                        </span>
+                                <a href="{{ route('especies.show', $especie->id) }}" style="text-decoration: none;">
+                                    <div
+                                        style="font-size: 0.8em; color: #27ae60; background: #f0f9f4; padding: 3px 6px; border-radius: 4px; margin-bottom: 3px; border-left: 3px solid #2ecc71;">
+                                        🌿 {{ $especie->nombre_cientifico }}
                                     </div>
                                 </a>
                             @endforeach
                         @else
-                            <span style="color: #bdc3c7; font-size: 0.8em; font-style: italic;">No hay especies asignadas</span>
+                            <span style="color: #bdc3c7; font-size: 0.8em;">No asignadas</span>
                         @endif
                     </td>
 
-                    <td style="padding: 10px; border: 1px solid #ddd;">📍 {{ $evento->ubicacion ?? 'No definida' }}</td>
-                    <td style="padding: 10px; border: 1px solid #ddd; white-space: nowrap;">
-                        {{ $evento->fecha ? \Carbon\Carbon::parse($evento->fecha)->format('d/m/Y') : 'Pendiente' }}
-                    </td>
+
                     <td style="padding: 10px; border: 1px solid #ddd;">
-                        <small><strong>Tipo:</strong> {{ $evento->tipo_evento }}</small><br>
-                        <small><strong>Suelo:</strong> {{ $evento->tipo_terreno }}</small>
+                        <div style="font-size: 0.9em;">📍 {{ $evento->ubicacion ?? 'Pendiente' }}</div>
+                        <div style="font-size: 0.85em; color: #7f8c8d;">📅
+                            {{ $evento->fecha ? \Carbon\Carbon::parse($evento->fecha)->format('d/m/Y') : 'Sin fecha' }}
+                        </div>
                     </td>
-                    <td style="padding: 8px; border: 1px solid #ddd;">
-                        <form action="{{ route('eventos.destroy', $evento->id) }}" method="post">
-                            @method('DELETE')
-                            @csrf
-                            <button type="submit">Eliminar</button>
-                        </form>
-                    </td>
-                    <td style="padding: 8px; border: 1px solid #ddd;">
-                        <a href="{{ url(path: 'eventos/' . $evento->id) }}">Ver detalles</a>
+
+
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
+                        <div style="display: flex; flex-direction: column; gap: 5px; align-items: center;">
+                            <a href="{{ route('eventos.show', $evento->id) }}"
+                                style="text-decoration: none; color: white; background: #3498db; padding: 5px 12px; border-radius: 4px; font-size: 0.85em; width: 80px; text-align: center;">Ver
+                                más</a>
+
+                            @if(auth()->check() && auth()->id() == $evento->id_anfitrion)
+                                <form action="{{ route('eventos.destroy', $evento->id) }}" method="post"
+                                    onsubmit="return confirm('¿Seguro que quieres eliminar este evento?')">
+                                    @method('DELETE')
+                                    @csrf
+                                    <button type="submit"
+                                        style="background: #e74c3c; color: white; border: none; padding: 5px 12px; border-radius: 4px; font-size: 0.85em; cursor: pointer; width: 80px;">Eliminar</button>
+                                </form>
+                            @endif
+                        </div>
                     </td>
                 </tr>
             @endforeach
