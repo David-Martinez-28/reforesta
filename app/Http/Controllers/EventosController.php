@@ -73,9 +73,9 @@ class EventosController extends Controller
         return view('eventos.show', compact('evento'));
     }
     public function edit(string $id)
-    {
+    {   $especies=Especies::all();
         $eventos = Eventos::findOrFail($id);
-        return view('eventos.edit', compact('eventos'));
+        return view('eventos.edit', compact('eventos','especies'));
     }
     /**
      * Update the specified resource in storage.
