@@ -139,6 +139,10 @@
                 <span class="label">Tipo</span>
                 <span class="value">{{ $usuario->tipo }}</span>
             </div>
+            <div class="info-row">
+                <span class="label">Creacion</span>
+                <span class="value">{{ $usuario->created_at }}</span>
+            </div>
 
             @if (auth()->check() && auth()->id() === $usuario->id)
                 <form action="{{ route('usuarios.edit', $usuario->id) }}" method="GET">

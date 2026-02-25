@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Usuarios extends Authenticatable
 {
     use HasFactory, Notifiable;
-    public $timestamps = false;
+    public $timestamps = true;
     protected $table = "usuarios";
 
     protected $fillable = [
