@@ -6,104 +6,113 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modificar evento</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --primary-color: #6366f1;
-            --primary-hover: #4f46e5;
-            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --glass-bg: rgba(255, 255, 255, 0.95);
-            --text-main: #1f2937;
-            --text-muted: #6b7280;
-        }
 
+    <style>
+        
         body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg-gradient);
-            background-attachment: fixed;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
             margin: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            color: var(--text-main);
         }
 
         .contenedor {
-            max-width: 500px;
-            margin: 50px auto;
-            background: var(--glass-bg);
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            max-width: 800px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         h1 {
-            margin-top: 0;
-            font-weight: 600;
+            color: #27ae60;
             text-align: center;
-            color: var(--primary-color);
-            font-size: 1.8rem;
             margin-bottom: 30px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
         }
 
-        form {
-            display: flex;
-            flex-direction: column;
+        .grid-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .campo-completo {
+            grid-column: span 2;
         }
 
         label {
-            font-weight: 600;
-            font-size: 0.9rem;
-            margin-bottom: 8px;
-            color: var(--text-main);
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #2c3e50;
+            font-size: 0.9em;
         }
 
-        input[type="text"] {
-            padding: 12px 15px;
-            border: 2px solid #e5e7eb;
-            border-radius: 10px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
+        input[type="text"],
+        input[type="date"],
+        input[type="url"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        select[multiple] {
+            height: 150px;
+            /* Ajuste para el multiselect */
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #27ae60;
             outline: none;
-            margin-bottom: 20px;
+            box-shadow: 0 0 5px rgba(39, 174, 96, 0.2);
         }
 
-        input[type="text"]:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        .error-msg {
+            color: #e74c3c;
+            font-size: 0.8em;
+            margin-top: 5px;
+            display: block;
         }
 
-        button.crear {
-            background-color: var(--primary-color);
+        .btn-guardar {
+            grid-column: span 2;
+            background-color: #27ae60;
             color: white;
-            padding: 14px;
             border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: 600;
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
             cursor: pointer;
-            transition: background 0.3s, transform 0.2s;
+            transition: background 0.3s;
             margin-top: 10px;
         }
 
-        button.crear:hover {
-            background-color: var(--primary-hover);
-            transform: translateY(-2px);
+        .btn-guardar:hover {
+            background-color: #219150;
         }
 
-        button.crear:active {
-            transform: translateY(0);
+        hr {
+            border: 0;
+            border-top: 1px solid #eee;
+            margin: 20px 0;
+            grid-column: span 2;
         }
 
-        input[type="text"]::placeholder {
-            color: var(--text-muted);
-        }
-
-        @media (max-width: 480px) {
-            .contenedor {
-                margin: 20px;
-                padding: 25px;
-            }
+        .ayuda {
+            color: #7f8c8d;
+            font-size: 0.85em;
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -115,32 +124,92 @@
             <h1>Modificar evento</h1>
 
             <form action="{{ route('eventos.update', $eventos->id) }}" method="POST">
-                @csrf
-                @method("PUT")
+            @csrf
+            @method('PUT')
+            <div class="grid-form">
+                <div class="campo-completo">
+                    <label for="nombre">Nombre del evento:</label>
+                    <input type="text" name="nombre" id="nombre" value="{{ old('nombre') }}"
+                        placeholder="Ej: Reforestación Sierra Norte">
+                    @error('nombre') <small class="error-msg">{{ $message }}</small> @enderror
+                </div>
 
-                <label for="nombre">Nombre</label>
-                <input type="text" name="nombre" class="nombre" value="{{ $eventos->nombre }}">
+                <div>
+                    <label for="ubicacion">Ubicación:</label>
+                    <input type="text" name="ubicacion" id="ubicacion" value="{{ old('ubicacion') }}"
+                        placeholder="Ciudad o Coordenadas">
+                    @error('ubicacion') <small class="error-msg">{{ $message }}</small> @enderror
+                </div>
 
-                <label for="descripcion">Descripción</label>
-                <input type="text" name="descripcion" class="descripcion" value="{{ $eventos->descripcion }}">
+                <div>
+                    <label for="fecha">Fecha del Evento:</label>
+                    <input type="date" name="fecha" id="fecha" value="{{ old('fecha') }}">
+                    @error('fecha') <small class="error-msg">{{ $message }}</small> @enderror
+                </div>
 
-                <label for="ubicacion">Ubicación</label>
-                <input type="text" name="ubicacion" class="ubicacion" value="{{ $eventos->ubicacion }}">
+                <div>
+                    <label for="tipo_terreno">Tipo de Terreno:</label>
+                    <select name="tipo_terreno" id="tipo_terreno">
+                        <option value="" disabled {{ old('tipo_terreno') ? '' : 'selected' }}>Selecciona uno...</option>
+                        <option value="Bosque" {{ old('tipo_terreno') == 'Bosque' ? 'selected' : '' }}>🌲 Bosque</option>
+                        <option value="Urbano" {{ old('tipo_terreno') == 'Urbano' ? 'selected' : '' }}>🏙️ Urbano</option>
+                        <option value="Montaña" {{ old('tipo_terreno') == 'Montaña' ? 'selected' : '' }}>⛰️ Montaña
+                        </option>
+                        <option value="Costa" {{ old('tipo_terreno') == 'Costa' ? 'selected' : '' }}>🏖️ Costa / Litoral
+                        </option>
+                        <option value="Selva" {{ old('tipo_terreno') == 'Selva' ? 'selected' : '' }}>🌿 Selva</option>
+                    </select>
+                    @error('tipo_terreno') <small class="error-msg">{{ $message }}</small> @enderror
+                </div>
 
-                <label for="fecha">Fecha</label>
-                <input type="text" name="fecha" class="fecha" value="{{ $eventos->fecha }}">
+                <div>
+                    <label for="tipo_evento">Tipo de Evento:</label>
+                    <select name="tipo_evento" id="tipo_evento">
+                        <option value="" disabled {{ old('tipo_evento') ? '' : 'selected' }}>Selecciona uno...</option>
+                        <option value="Plantación" {{ old('tipo_evento') == 'Plantación' ? 'selected' : '' }}>🌱
+                            Plantación</option>
+                        <option value="Limpieza" {{ old('tipo_evento') == 'Limpieza' ? 'selected' : '' }}>🧹 Limpieza
+                        </option>
+                        <option value="Mantenimiento" {{ old('tipo_evento') == 'Mantenimiento' ? 'selected' : '' }}>🔧
+                            Mantenimiento</option>
+                        <option value="Taller Educativo" {{ old('tipo_evento') == 'Taller Educativo' ? 'selected' : '' }}>
+                            📚 Taller Educativo</option>
+                    </select>
+                    @error('tipo_evento') <small class="error-msg">{{ $message }}</small> @enderror
+                </div>
 
-                <label for="tipo_terreno">Tipo de terreno</label>
-                <input type="text" name="tipo_terreno" class="tipo_terreno" value="{{ $eventos->tipo_terreno }}">
+                <div class="campo-completo">
+                    <label for="descripcion">Descripción:</label>
+                    <textarea name="descripcion" id="descripcion" rows="3"
+                        placeholder="Detalles sobre la actividad...">{{ old('descripcion') }}</textarea>
+                    @error('descripcion') <small class="error-msg">{{ $message }}</small> @enderror
+                </div>
 
-                <label for="tipo_evento">Tipo de evento</label>
-                <input type="text" name="tipo_evento" class="tipo_evento" value="{{ $eventos->tipo_evento }}">
+                <hr>
 
-                <label for="imagen">URL de la Imagen</label>
-                <input type="text" name="imagen" class="imagen" value="{{ $eventos->imagen }}">
+                <div class="campo-completo">
+                    <label for="especies">Especies involucradas:</label>
+                    <p class="ayuda">(Mantén presionado Ctrl / Cmd para seleccionar varias)</p>
+                    <select name="especies[]" id="especies" multiple>
+                        @foreach($especies as $especie)
+                            <option value="{{ $especie->id }}" {{ (is_array(old('especies')) && in_array($especie->id, old('especies'))) ? 'selected' : '' }}>
+                                🌿 {{ $especie->nombre_cientifico }} ({{ $especie->nombre_comun }})
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('especies') <small class="error-msg">{{ $message }}</small> @enderror
+                </div>
 
-                <button type="submit" class="crear">Actualizar evento</button>
-            </form>
+                <div class="campo-completo">
+                    <label for="imagen">URL de la Imagen de Portada:</label>
+                    <input type="text" name="imagen" id="imagen"
+                        value="{{ old('imagen', 'https://unomasunoteam.com/wp-content/uploads/2021/05/huella_verde.jpg') }}">
+                    @error('imagen') <small class="error-msg">{{ $message }}</small> @enderror
+                </div>
+
+                <button type="submit" class="btn-guardar">Modificar Evento de Reforestación</button>
+            </div>
+        </form>
         </div>
     </div>
 </body>
