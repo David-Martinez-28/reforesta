@@ -1,12 +1,19 @@
+<style>
+    a {
+        text-decoration: none;
+    }
+</style>
+
 <nav style="display: flex; align-items: center; gap: 15px; padding: 10px; background: #f8f9fa;">
     <a href="{{ url('/') }}">Inicio</a>
-    <a href="{{ url('/usuarios') }}">Usuarios</a>
     <a href="{{ url('/especies') }}">Especies</a>
-    <a href="{{ url('/eventos/create') }}">Crear Eventos</a>
 
     <div style="border-left: 1px solid #ccc; height: 20px; margin: 0 10px;"></div>
 
     @auth
+        <a href="{{ url('/eventos/create') }}">Añadir Eventos</a>
+        <a href="{{ url('/especies/create') }}">Añadir Especies</a>
+
         <div style="display: flex; align-items: center; gap: 10px;">
 
             <a href="{{ route('usuarios.show', Auth::user()->id) }}"

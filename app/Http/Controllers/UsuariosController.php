@@ -86,12 +86,12 @@ class UsuariosController extends Controller
             // Importante: Encripta la password si se cambia, o mantenla si viene vacía
             'password' => $request->filled('password') ? bcrypt($request->password) : $usuario->password,
             'ubicacion' => $request->ubicacion,
-            'karma' => $request->karma,
+            //'karma' => $request->karma,
             'avatar' => $request->avatar,
             'tipo' => $request->tipo,
         ]);
 
-        return redirect()->route('usuarios.index'); // Corregido a plural
+        return redirect()->route('usuarios.show',$usuario->id); 
     }
 
     /**
