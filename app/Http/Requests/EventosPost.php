@@ -21,8 +21,12 @@ class EventosPost extends FormRequest
      */
     public function rules(): array
     {
+        // Obtenemos el ID del evento desde la ruta
+        $eventoId = $this->route('evento');
+
         return [
-            'nombre' => 'required|string|max:255|unique:eventos,nombre',
+            // Añadimos el "ignore" al final de la regla unique
+            'nombre' => 'required|string|max:255|unique:eventos,nombre,' . $eventoId,
 
             'descripcion' => 'nullable|string|max:255',
             'ubicacion' => 'required|string|max:255',
@@ -36,7 +40,6 @@ class EventosPost extends FormRequest
                 Rule::in(['Plantación', 'Limpieza', 'Mantenimiento', 'Taller Educativo']),
             ],
             'imagen' => 'nullable|string|max:255',
-
         ];
     }
 

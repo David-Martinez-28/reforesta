@@ -41,7 +41,7 @@ class UsuariosController extends Controller
             $datos['avatar'] = null;
         }
 
-        Usuarios::create([
+        $usuario=Usuarios::create([
             'nombre' => $datos['nombre'],
             'nick' => $datos['nick'],
             'email' => $datos['email'],
@@ -52,7 +52,11 @@ class UsuariosController extends Controller
             'tipo' => $request->tipo ?? 'user',
         ]);
 
-        return redirect()->route('usuarios.index')->with('success', '¡Usuario creado correctamente!');
+        Auth::login($usuario);
+
+        $request->session()->regenerate();
+
+        return redirect()->route('eventos.index')->with('success', '¡Usuario creado correctamente!');
     }
 
     /**
