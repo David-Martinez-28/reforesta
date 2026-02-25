@@ -103,6 +103,12 @@
                     @endforelse
                 </div>
             </div>
+
+            @if (auth()->check() && auth()->id() === $evento->id_anfitrion)
+                <form action="{{ route('eventos.edit', $evento->id) }}" method="GET">
+                    <button type="submit" class="btn-edit">Modificar datos</button>
+                </form>
+            @endif
         </div>
 
     @else
