@@ -91,7 +91,7 @@ class UsuariosController extends Controller
             'tipo' => $request->tipo,
         ]);
 
-        return redirect()->route('usuarios.index'); // Corregido a plural
+        return redirect()->route('usuarios.show',$usuario->id); 
     }
 
     /**

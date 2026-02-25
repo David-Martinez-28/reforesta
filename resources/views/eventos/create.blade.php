@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrar Evento</title>
     <style>
-        /* Reutilizando tu CSS de Especies */
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f7f6;
@@ -63,10 +63,13 @@
         }
 
         select[multiple] {
-            height: 150px; /* Ajuste para el multiselect */
+            height: 150px;
+            /* Ajuste para el multiselect */
         }
 
-        input:focus, textarea:focus, select:focus {
+        input:focus,
+        textarea:focus,
+        select:focus {
             border-color: #27ae60;
             outline: none;
             box-shadow: 0 0 5px rgba(39, 174, 96, 0.2);
@@ -113,6 +116,7 @@
 </head>
 
 <body>
+
     @include('nav')
 
     <div class="contenedor">
@@ -124,13 +128,15 @@
             <div class="grid-form">
                 <div class="campo-completo">
                     <label for="nombre">Nombre del evento:</label>
-                    <input type="text" name="nombre" id="nombre" value="{{ old('nombre') }}" placeholder="Ej: Reforestación Sierra Norte">
+                    <input type="text" name="nombre" id="nombre" value="{{ old('nombre') }}"
+                        placeholder="Ej: Reforestación Sierra Norte">
                     @error('nombre') <small class="error-msg">{{ $message }}</small> @enderror
                 </div>
 
                 <div>
                     <label for="ubicacion">Ubicación:</label>
-                    <input type="text" name="ubicacion" id="ubicacion" value="{{ old('ubicacion') }}" placeholder="Ciudad o Coordenadas">
+                    <input type="text" name="ubicacion" id="ubicacion" value="{{ old('ubicacion') }}"
+                        placeholder="Ciudad o Coordenadas">
                     @error('ubicacion') <small class="error-msg">{{ $message }}</small> @enderror
                 </div>
 
@@ -142,19 +148,39 @@
 
                 <div>
                     <label for="tipo_terreno">Tipo de Terreno:</label>
-                    <input type="text" name="tipo_terreno" id="tipo_terreno" value="{{ old('tipo_terreno') }}" placeholder="Ej: Bosque, Urbano...">
+                    <select name="tipo_terreno" id="tipo_terreno">
+                        <option value="" disabled {{ old('tipo_terreno') ? '' : 'selected' }}>Selecciona uno...</option>
+                        <option value="Bosque" {{ old('tipo_terreno') == 'Bosque' ? 'selected' : '' }}>🌲 Bosque</option>
+                        <option value="Urbano" {{ old('tipo_terreno') == 'Urbano' ? 'selected' : '' }}>🏙️ Urbano</option>
+                        <option value="Montaña" {{ old('tipo_terreno') == 'Montaña' ? 'selected' : '' }}>⛰️ Montaña
+                        </option>
+                        <option value="Costa" {{ old('tipo_terreno') == 'Costa' ? 'selected' : '' }}>🏖️ Costa / Litoral
+                        </option>
+                        <option value="Selva" {{ old('tipo_terreno') == 'Selva' ? 'selected' : '' }}>🌿 Selva</option>
+                    </select>
                     @error('tipo_terreno') <small class="error-msg">{{ $message }}</small> @enderror
                 </div>
 
                 <div>
                     <label for="tipo_evento">Tipo de Evento:</label>
-                    <input type="text" name="tipo_evento" id="tipo_evento" value="{{ old('tipo_evento') }}" placeholder="Ej: Plantación, Limpieza...">
+                    <select name="tipo_evento" id="tipo_evento">
+                        <option value="" disabled {{ old('tipo_evento') ? '' : 'selected' }}>Selecciona uno...</option>
+                        <option value="Plantación" {{ old('tipo_evento') == 'Plantación' ? 'selected' : '' }}>🌱
+                            Plantación</option>
+                        <option value="Limpieza" {{ old('tipo_evento') == 'Limpieza' ? 'selected' : '' }}>🧹 Limpieza
+                        </option>
+                        <option value="Mantenimiento" {{ old('tipo_evento') == 'Mantenimiento' ? 'selected' : '' }}>🔧
+                            Mantenimiento</option>
+                        <option value="Taller Educativo" {{ old('tipo_evento') == 'Taller Educativo' ? 'selected' : '' }}>
+                            📚 Taller Educativo</option>
+                    </select>
                     @error('tipo_evento') <small class="error-msg">{{ $message }}</small> @enderror
                 </div>
 
                 <div class="campo-completo">
                     <label for="descripcion">Descripción:</label>
-                    <textarea name="descripcion" id="descripcion" rows="3" placeholder="Detalles sobre la actividad...">{{ old('descripcion') }}</textarea>
+                    <textarea name="descripcion" id="descripcion" rows="3"
+                        placeholder="Detalles sobre la actividad...">{{ old('descripcion') }}</textarea>
                     @error('descripcion') <small class="error-msg">{{ $message }}</small> @enderror
                 </div>
 
@@ -175,7 +201,8 @@
 
                 <div class="campo-completo">
                     <label for="imagen">URL de la Imagen de Portada:</label>
-                    <input type="text" name="imagen" id="imagen" value="{{ old('imagen', 'https://unomasunoteam.com/wp-content/uploads/2021/05/huella_verde.jpg') }}">
+                    <input type="text" name="imagen" id="imagen"
+                        value="{{ old('imagen', 'https://unomasunoteam.com/wp-content/uploads/2021/05/huella_verde.jpg') }}">
                     @error('imagen') <small class="error-msg">{{ $message }}</small> @enderror
                 </div>
 
@@ -183,6 +210,9 @@
             </div>
         </form>
     </div>
+
+
+
 </body>
 
 </html>
