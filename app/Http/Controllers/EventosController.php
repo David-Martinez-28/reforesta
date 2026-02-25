@@ -80,25 +80,23 @@ class EventosController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(EventosPost $request, string $id)
     {
 
-        $eventos = Eventos::find($id);
+        // findOrFail lanza un error 404 automáticamente si no existe el ID
+        $evento = Eventos::findOrFail($id);
 
-        if (filled($eventos)) {
-            $eventos->update([
-                'nombre' => $request->nombre,
-                'descripcion' => $request->descripcion,
-                'ubicacion' => $request->ubicacion,
-                'fecha' => $request->fecha,
-                'tipo_terreno' => $request->tipo_terreno,
-                'tipo_evento' => $request->tipo_evento,
-                'imagen' => $request->imagen,
-            ]);
+        // Esto solo toma los datos que definiste en las reglas de EventosPost
+        $datos = $request->validated();
 
+        // Si manejas subida de archivos para 'imagen', hazlo aquí antes del update
+        if ($request->hasFile('imagen')) {
+            $datos['imagen'] = $request->file('imagen')->store('eventos', 'public');
         }
 
-        return redirect()->route('eventos.index');
+        $evento->update($datos);
+
+        return redirect()->route('eventos.index')->with('success', 'Evento actualizado');
     }
     /**
      * Remove the specified resource from storage.
