@@ -105,7 +105,7 @@
 
         <div class="acciones-contenedor">
             <a href="{{ route('especies.edit', $especie->id) }}" class="btn btn-editar">
-                <span>✏️</span> Editar Información de la Especie
+                <span>✏️</span> Modificar especie
             </a>
         </div>
 

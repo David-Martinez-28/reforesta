@@ -123,7 +123,7 @@
     @include('nav')
 
     <div class="contenedor">
-        <h1>📝 Editar Especie</h1>
+        <h1>📝 Modificar Especie</h1>
 
         <form action="{{ route('especies.update', $especie->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
