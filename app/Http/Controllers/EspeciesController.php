@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EspeciesPost;
 use App\Models\Especies;
 use Illuminate\Http\Request;
 
@@ -28,19 +29,20 @@ class EspeciesController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(EspeciesPost $request)
     {
+        $rutaFoto = null;
+        if ($request->hasFile('foto_especie')) {
+            $rutaFoto = $request->file('foto_especie')->store('especies', 'public');
+        }
+
         Especies::create([
             'nombre_cientifico' => $request->nombre_cientifico,
-            'tiempo_para_adultez' => $request->tiempo_para_adultez,
-            'region_origen' => $request->region_origen,
-            'clima' => $request->clima,
-            'enlace_descripcion' => $request->enlace_descripcion,
-            'foto_especie' => $request->foto_especie,
-            'beneficios' => $request->beneficios,
+            
+            'foto_especie' => $rutaFoto,
         ]);
 
-        return redirect()->route('especies.index')->with('success', 'Especie creado correctamente');
+        return redirect()->route('especies.index')->with('success', 'Guardado con éxito');
     }
 
     /**
