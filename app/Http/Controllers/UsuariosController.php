@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Usuarios;
 use Auth;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Requests\UsuarioPost;
 
@@ -50,6 +51,7 @@ class UsuariosController extends Controller
             'karma' => $request->karma ?? 0,
             'avatar' => $datos['avatar'],
             'tipo' => $request->tipo ?? 'user',
+            
         ]);
 
         Auth::login($usuario);
