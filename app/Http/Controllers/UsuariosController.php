@@ -7,7 +7,7 @@ use Auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Requests\UsuarioPost;
-
+use Illuminate\Support\Facades\Storage;
 class UsuariosController extends Controller
 {
     /**
@@ -42,7 +42,7 @@ class UsuariosController extends Controller
             $datos['avatar'] = null;
         }
 
-        $usuario=Usuarios::create([
+        $usuario = Usuarios::create([
             'nombre' => $datos['nombre'],
             'nick' => $datos['nick'],
             'email' => $datos['email'],
@@ -51,7 +51,7 @@ class UsuariosController extends Controller
             'karma' => $request->karma ?? 0,
             'avatar' => $datos['avatar'],
             'tipo' => $request->tipo ?? 'user',
-            
+
         ]);
 
         Auth::login($usuario);
@@ -81,23 +81,41 @@ class UsuariosController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UsuarioPost $request, string $id)
     {
         $usuario = Usuarios::findOrFail($id);
 
-        $usuario->update([
-            'nombre' => $request->nombre,
-            'nick' => $request->nick,
-            'email' => $request->email,
-            // Importante: Encripta la password si se cambia, o mantenla si viene vacía
-            'password' => $request->filled('password') ? bcrypt($request->password) : $usuario->password,
-            'ubicacion' => $request->ubicacion,
-            //'karma' => $request->karma,
-            'avatar' => $request->avatar,
-            'tipo' => $request->tipo,
-        ]);
+        // 1. Obtener datos validados
+        $datos = $request->validated();
 
-        return redirect()->route('usuarios.show',$usuario->id); 
+        // 2. Lógica del Avatar
+        if ($request->hasFile('avatar')) {
+
+            // --- MEJORA: Borrar el archivo viejo si existe ---
+            if ($usuario->avatar && Storage::disk('public')->exists($usuario->avatar)) {
+                Storage::disk('public')->delete($usuario->avatar);
+            }
+
+            // Guardar el nuevo
+            $datos['avatar'] = $request->file('avatar')->store('avatars', 'public');
+
+        } else {
+            // Si no sube nada, nos aseguramos de no tocar lo que ya hay en la BD
+            unset($datos['avatar']);
+        }
+
+        // 3. Lógica de Contraseña (bcrypt)
+        if ($request->filled('password')) {
+            $datos['password'] = bcrypt($request->password);
+        } else {
+            unset($datos['password']);
+        }
+
+        // 4. Actualizar una sola vez
+        $usuario->update($datos);
+
+        return redirect()->route('usuarios.show', $usuario->id)
+            ->with('success', 'Perfil actualizado con éxito.');
     }
 
     /**
@@ -105,13 +123,25 @@ class UsuariosController extends Controller
      */
     public function destroy(string $id)
     {
-        Usuarios::findOrFail($id)->delete();
-        return redirect('usuarios');
-    }
 
-    public function loginForm()
-    {
-        return view('auth.login');
+        $evento = Eventos::with('anfitrion')->findOrFail($id);
+        $usuarioAutenticado = auth()->user();
+
+
+        if ($evento->id_anfitrion !== $usuarioAutenticado->id) {
+            return back()->with('error', 'No tienes permiso para borrar este evento.');
+        }
+
+        $usuarioAutenticado->decrement('karma', 4);
+
+        if ($evento->imagen) {
+            Storage::disk('public')->delete($evento->imagen);
+        }
+
+        $evento->delete();
+
+        return redirect()->route('eventos.index')
+            ->with('success', 'Evento eliminado y se han restado 4 puntos de karma.');
     }
 
 

@@ -3,30 +3,45 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule; 
 
 class UsuarioPost extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
-    public function rules()
+    public function rules(): array
     {
+        // Obtenemos el ID del usuario de la ruta para poder ignorarlo en el unique
+        // Dependiendo de cómo se llame tu parámetro en web.php (usuario o usuarios)
+        $usuarioId = $this->route('usuario') ?? $this->route('usuarios');
+
         return [
             'nombre' => 'required|string|max:255',
-            'nick' => 'required|string|max:50|unique:usuarios,nick',
-            'email' => 'required|email|max:255|unique:usuarios,email',
-            'password' => 'required|string|min:6|confirmed',
-            'avatar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // Permiso para subir fotos de máx 2MB
+
+            // Si hay un ID, ignoramos ese registro en la validación unique
+            'nick' => [
+                'required',
+                'string',
+                'max:50',
+                Rule::unique('usuarios', 'nick')->ignore($usuarioId),
+            ],
+
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                Rule::unique('usuarios', 'email')->ignore($usuarioId),
+            ],
+
+            // La contraseña solo es obligatoria al CREAR. Al EDITAR es nullable.
+            'password' => $this->isMethod('POST')
+                ? 'required|string|min:6|confirmed'
+                : 'nullable|string|min:6|confirmed',
+
+            'avatar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ];
     }
 
@@ -34,19 +49,11 @@ class UsuarioPost extends FormRequest
     {
         return [
             'nombre.required' => 'El nombre es obligatorio.',
-            'nombre.max' => 'El nombre no puede tener más de 255 caracteres.',
-
-            'nick.required' => 'El nickname es obligatorio.',
-            'nick.unique' => 'Este nickname ya está siendo utilizado por otro usuario.',
-
-            'email.required' => 'El correo electrónico es obligatorio.',
-            'email.email' => 'Debes introducir un formato de correo válido.',
+            'nick.unique' => 'Este nickname ya está siendo utilizado.',
             'email.unique' => 'Este correo ya está registrado.',
-
             'password.required' => 'La contraseña es obligatoria.',
             'password.min' => 'La contraseña debe tener al menos 6 caracteres.',
             'password.confirmed' => 'Las contraseñas no coinciden.',
-
             'avatar.image' => 'El archivo debe ser una imagen (jpg, png, etc.).',
             'avatar.max' => 'La imagen es demasiado pesada (máximo 2MB).',
         ];

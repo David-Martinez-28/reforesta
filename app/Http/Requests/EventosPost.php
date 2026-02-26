@@ -27,7 +27,7 @@ class EventosPost extends FormRequest
         return [
             // Añadimos el "ignore" al final de la regla unique
             'nombre' => 'required|string|max:255|unique:eventos,nombre,' . $eventoId,
-
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'descripcion' => 'nullable|string|max:255',
             'ubicacion' => 'required|string|max:255',
             'fecha' => 'nullable|date|after:today',
@@ -39,7 +39,7 @@ class EventosPost extends FormRequest
                 'required',
                 Rule::in(['Plantación', 'Limpieza', 'Mantenimiento', 'Taller Educativo']),
             ],
-            'imagen' => 'nullable|string|max:255',
+            
         ];
     }
 

@@ -6,7 +6,8 @@ use App\Http\Requests\EventosPost;
 use App\Models\Especies;
 use App\Models\Eventos;
 use Illuminate\Http\Request;
-use App\Models\Usuarios;
+
+
 
 class EventosController extends Controller
 {
@@ -39,15 +40,22 @@ class EventosController extends Controller
     public function store(EventosPost $request)
     {
         $datos = $request->validated();
+        if ($request->hasFile('imagen')) {
+            $datos['imagen'] = $request->file('imagen')->store('eventos', 'public');
+        }
 
-        $evento = auth()->user()->eventosOrganizados()->create($datos);
+        $usuario = auth()->user();
+        $evento = $usuario->eventosOrganizados()->create($datos);
 
         if ($request->has('especies')) {
             $evento->especies()->attach($request->especies);
         }
 
+        // SUMAR 4 DE KARMA
+        $usuario->increment('karma', 4);
+
         return redirect()->route('eventos.index')
-            ->with('success', 'Evento creado correctamente con sus especies.');
+            ->with('success', 'Evento creado correctamente. ¡Has ganado 4 de karma!');
     }
 
     /**
@@ -73,37 +81,47 @@ class EventosController extends Controller
         return view('eventos.show', compact('evento'));
     }
     public function edit(string $id)
-    {   $especies=Especies::all();
+    {
+        $especies = Especies::all();
         $eventos = Eventos::findOrFail($id);
-        return view('eventos.edit', compact('eventos','especies'));
+        return view('eventos.edit', compact('eventos', 'especies'));
     }
     /**
      * Update the specified resource in storage.
      */
     public function update(EventosPost $request, string $id)
     {
-
-        // findOrFail lanza un error 404 automáticamente si no existe el ID
         $evento = Eventos::findOrFail($id);
-
-        // Esto solo toma los datos que definiste en las reglas de EventosPost
         $datos = $request->validated();
 
-        // Si manejas subida de archivos para 'imagen', hazlo aquí antes del update
         if ($request->hasFile('imagen')) {
+
+            // 2. Guardar la nueva imagen
             $datos['imagen'] = $request->file('imagen')->store('eventos', 'public');
+        }
+
+        // 3. Sincronizar las especies (Many-to-Many)
+        // Es vital añadir esto para que los cambios en el select múltiple se guarden
+        if ($request->has('especies')) {
+            $evento->especies()->sync($request->especies);
+        } else {
+            // Si el usuario desmarca todas, vaciamos la relación
+            $evento->especies()->detach();
         }
 
         $evento->update($datos);
 
-        return redirect()->route('eventos.index')->with('success', 'Evento actualizado');
+        return redirect()->route('eventos.index')->with('success', 'Evento actualizado correctamente.');
     }
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
+        $usuario = auth()->user();
         Eventos::findOrFail($id)->delete();
+        $usuario->decrement('karma', 4);
+
         return redirect('eventos');
     }
 }

@@ -101,7 +101,7 @@
             @csrf
 
             <div class="form-group">
-                <label for="login">Usuario o Email:</label>
+                <label for="login">Email:</label>
                 <input type="text" name="login" id="login" placeholder="Introduce tu usuario"
                     value="{{ old('login') }}">
                 @error('login') <small class="error-msg">{{ $message }}</small> @enderror

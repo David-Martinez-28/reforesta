@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrar Evento</title>
     <style>
-        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f7f6;
@@ -122,7 +121,7 @@
     <div class="contenedor">
         <h1>📅 Registrar Evento</h1>
 
-        <form action="{{ route('eventos.store') }}" method="POST">
+        <form action="{{ route('eventos.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
             <div class="grid-form">
@@ -200,10 +199,14 @@
                 </div>
 
                 <div class="campo-completo">
-                    <label for="imagen">URL de la Imagen de Portada:</label>
-                    <input type="text" name="imagen" id="imagen"
-                        value="{{ old('imagen', 'https://unomasunoteam.com/wp-content/uploads/2021/05/huella_verde.jpg') }}">
-                    @error('imagen') <small class="error-msg">{{ $message }}</small> @enderror
+                    <label for="imagen">Imagen de Portada:</label>
+                    <input type="file" name="imagen" id="imagen" accept="image/*">
+
+                    <p class="ayuda">Selecciona una foto representativa del evento (JPG, PNG).</p>
+
+                    @error('imagen')
+                        <small class="error-msg">{{ $message }}</small>
+                    @enderror
                 </div>
 
                 <button type="submit" class="btn-guardar">Crear Evento de Reforestación</button>
