@@ -16,7 +16,13 @@ class EventosController extends Controller
      */
     public function index()
     {
-        // Eager loading para evitar errores y lentitud
+        // Eliminar automáticamente antes de mostrar la lista
+        $pasados = Eventos::where('fecha', '<', now())->get();
+        foreach ($pasados as $p) {
+            
+            $p->delete();
+        }
+
         $eventos = Eventos::with(['asistentes', 'especies'])->get();
         return view('eventos.index', compact('eventos'));
     }
