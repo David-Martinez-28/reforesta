@@ -8,6 +8,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Requests\UsuarioPost;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\LoginPost;
+use App\Models\Eventos;
 class UsuariosController extends Controller
 {
     /**
@@ -143,31 +145,29 @@ class UsuariosController extends Controller
         return redirect()->route('eventos.index')
             ->with('success', 'Evento eliminado y se han restado 4 puntos de karma.');
     }
-
-
-    public function login(Request $request)
+    public function loginForm()
     {
-        $request->validate([
-            'login' => 'required|email',
-            'password' => 'required',
-        ]);
+        return view('auth.login');
+    }
 
+    public function login(LoginPost $request)
+    {
+        // 1. Los datos ya vienen validados por LoginPost
         $credenciales = [
-            'email' => $request->login,
+            'email' => $request->login, // Mapeamos 'login' del form a 'email' de la DB
             'password' => $request->password
         ];
 
-
+        // 2. Intentar el login
         if (Auth::attempt($credenciales)) {
-
+            // Éxito: Regenerar sesión por seguridad
             $request->session()->regenerate();
-
             return redirect()->route('eventos.index');
         }
 
-
+        // 3. Error: Credenciales no coinciden con la base de datos
         return back()->withErrors([
-            'error' => 'El correo electrónico o la contraseña son incorrectos.',
+            'error_auth' => 'El correo electrónico o la contraseña son incorrectos.',
         ])->withInput($request->only('login'));
     }
     public function logout()

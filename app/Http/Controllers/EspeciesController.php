@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\EspeciesPost;
 use App\Models\Especies;
+use App\Http\Requests\EspeciesModificarPost;
 use Illuminate\Http\Request;
 
 class EspeciesController extends Controller
@@ -31,18 +32,20 @@ class EspeciesController extends Controller
      */
     public function store(EspeciesPost $request)
     {
-        $rutaFoto = null;
+        // 1. Obtener los datos ya validados
+        $datos = $request->validated();
+
+        // 2. Gestionar la subida de la foto
         if ($request->hasFile('foto_especie')) {
-            $rutaFoto = $request->file('foto_especie')->store('especies', 'public');
+            $datos['foto_especie'] = $request->file('foto_especie')->store('especies', 'public');
         }
 
-        Especies::create([
-            'nombre_cientifico' => $request->nombre_cientifico,
-            
-            'foto_especie' => $rutaFoto,
-        ]);
+        // 3. Crear el registro de forma directa (sin relación)
+        Especies::create($datos);
 
-        return redirect()->route('especies.index')->with('success', 'Guardado con éxito');
+
+        return redirect()->route('especies.index')
+            ->with('success', 'Especie guardada correctamente. ¡Has ganado 4 de karma!');
     }
 
     /**
@@ -65,25 +68,29 @@ class EspeciesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(EspeciesModificarPost $request, string $id)
     {
+        // 1. Buscamos el registro (findOrFail lanza 404 si no existe)
+        $especie = Especies::findOrFail($id);
 
-        $especies = Especies::find($id);
+        // 2. Obtenemos solo los datos validados del Form Request
+        $datos = $request->validated();
 
-        if (filled($especies)) {
-            $especies->update([
-                'nombre_cientifico' => $request->nombre_cientifico,
-                'tiempo_para_adultez' => $request->tiempo_para_adultez,
-                'region_origen' => $request->region_origen,
-                'clima' => $request->clima,
-                'enlace_descripcion' => $request->enlace_descripcion,
-                'foto_especie' => $request->foto_especie,
-                'beneficios' => $request->beneficios,
-            ]);
+        // 3. Gestión del archivo físico
+        if ($request->hasFile('foto_especie')) {
 
+    
+            // Guardamos el nuevo archivo y obtenemos la ruta
+            $ruta = $request->file('foto_especie')->store('especies', 'public');
+
+            // Sobrescribimos el valor en el array de datos
+            $datos['foto_especie'] = $ruta;
         }
 
-        return redirect()->route('especies.index');
+        // 4. Actualizamos el registro con el array final
+        $especie->update($datos);
+
+        return redirect()->route('especies.index')->with('success', 'Especie actualizada con éxito');
     }
 
     /**

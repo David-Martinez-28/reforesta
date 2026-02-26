@@ -51,14 +51,7 @@
             @error('ubicacion') <span class="error-msg">{{ $message }}</span> @enderror
         </div>
 
-        <div class="campo">
-            <label for="tipo">Tipo de usuario</label>
-            <select name="tipo" id="tipo">
-                <option value="user" {{ old('tipo', $usuario->tipo) == 'user' ? 'selected' : '' }}>Usuario Estándar</option>
-                <option value="admin" {{ old('tipo', $usuario->tipo) == 'admin' ? 'selected' : '' }}>Administrador</option>
-            </select>
-            @error('tipo') <span class="error-msg">{{ $message }}</span> @enderror
-        </div>
+    
 
         <div class="campo">
             <label>Foto de Perfil (Avatar)</label>

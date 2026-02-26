@@ -219,20 +219,26 @@
                         class="{{ $errors->has('beneficios') ? 'is-invalid' : '' }}">{{ old('beneficios', $especies->beneficios) }}</textarea>
                     @error('beneficios') <small class="error-msg">{{ $message }}</small> @enderror
                 </div>
-
                 <div class="campo-completo"
                     style="text-align: center; background: #f9f9f9; padding: 20px; border-radius: 8px;">
-                    <label>Vista previa actual:</label><br>
-                    <img src="{{ $especies->foto_especie }}" alt="Foto actual" class="preview-img">
+                    <label>Vista previa:</label><br>
+
+                    <img id="img-preview"
+                        src="{{ $especies->foto_especie ? asset('storage/' . $especies->foto_especie) : 'https://via.placeholder.com/400x300?text=Sin+Imagen' }}"
+                        alt="Foto actual" class="preview-img"
+                        style="max-width: 300px; border-radius: 8px; margin-bottom: 15px;">
 
                     <div style="margin-top: 20px;">
-                        <label for="foto_especie">Actualizar URL de la Imagen:</label>
-                        <input type="url" name="foto_especie" id="foto_especie"
+                        <label for="foto_especie">Actualizar Imagen de la Especie:</label>
+                        <input type="file" name="foto_especie" id="foto_especie" accept="image/*"
                             class="{{ $errors->has('foto_especie') ? 'is-invalid' : '' }}"
-                            value="{{ old('foto_especie', $especies->foto_especie) }}">
-                        @error('foto_especie') <small class="error-msg">{{ $message }}</small> @enderror
+                            onchange="previewImage(event)">
+
+                        @error('foto_especie') <small class="error-msg" style="color:red;">{{ $message }}</small>
+                        @enderror
                     </div>
                 </div>
+
 
                 <button type="submit" class="btn-actualizar">🚀 Actualizar Cambios</button>
             </div>

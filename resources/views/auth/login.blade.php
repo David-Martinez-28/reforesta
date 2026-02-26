@@ -97,23 +97,31 @@
     <div class="contenedor-login">
         <h1>🔐 Login</h1>
 
+        @if ($errors->has('error_auth'))
+            <div
+                style="color: white; background: #e74c3c; padding: 10px; margin-bottom: 15px; border-radius: 5px; font-size: 14px;">
+                {{ $errors->first('error_auth') }}
+            </div>
+        @endif
+
         <form action="{{ route('login') }}" method="POST">
             @csrf
 
             <div class="form-group">
                 <label for="login">Email:</label>
-                <input type="text" name="login" id="login" placeholder="Introduce tu usuario"
-                    value="{{ old('login') }}">
+                <input type="text" name="login" id="login" value="{{ old('login') }}"
+                    style="{{ $errors->has('login') ? 'border-color: red;' : '' }}">
+
                 @error('login') <small class="error-msg">{{ $message }}</small> @enderror
             </div>
 
             <div class="form-group">
                 <label for="password">Contraseña:</label>
-                <input type="password" name="password" id="password" placeholder="••••••••">
+                <input type="password" name="password" id="password">
                 @error('password') <small class="error-msg">{{ $message }}</small> @enderror
             </div>
 
-            <button type="submit" name="enviar" class="btn-enviar">Entrar al Sistema</button>
+            <button type="submit" class="btn-enviar">Entrar al Sistema</button>
         </form>
     </div>
 </body>

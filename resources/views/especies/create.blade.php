@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es-ES">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -62,7 +63,8 @@
             transition: all 0.3s ease;
         }
 
-        input:focus, textarea:focus {
+        input:focus,
+        textarea:focus {
             border-color: #27ae60;
             outline: none;
             box-shadow: 0 0 8px rgba(39, 174, 96, 0.15);
@@ -107,7 +109,7 @@
             grid-column: span 2;
         }
 
-        
+
         .preview-img {
             width: 100%;
             height: 150px;
@@ -118,6 +120,7 @@
         }
     </style>
 </head>
+
 <body>
 
     @include('nav')
@@ -146,15 +149,15 @@
 
                 <div>
                     <label for="region_origen">Región de Origen:</label>
-                    <input type="text" name="region_origen" id="region_origen" 
-                        value="{{ old('region_origen') }}" placeholder="Ej: Cuenca del Mediterráneo">
+                    <input type="text" name="region_origen" id="region_origen" value="{{ old('region_origen') }}"
+                        placeholder="Ej: Cuenca del Mediterráneo">
                     @error('region_origen') <small class="error-msg">{{ $message }}</small> @enderror
                 </div>
 
                 <div>
                     <label for="clima">Clima Ideal:</label>
-                    <input type="text" name="clima" id="clima" 
-                        value="{{ old('clima') }}" placeholder="Ej: Seco, soleado">
+                    <input type="text" name="clima" id="clima" value="{{ old('clima') }}"
+                        placeholder="Ej: Seco, soleado">
                     @error('clima') <small class="error-msg">{{ $message }}</small> @enderror
                 </div>
 
@@ -175,10 +178,12 @@
                 <hr>
 
                 <div class="campo-completo">
-                    <label for="foto_especie">URL de la Imagen de la Especie:</label>
-                    <input type="url" name="foto_especie" id="foto_especie"
-                        value="{{ old('foto_especie', 'https://via.placeholder.com/400x300?text=Previsualizacion+de+Imagen') }}">
-                    @error('foto_especie') <small class="error-msg">{{ $message }}</small> @enderror
+                    <label for="foto_especie">Subir imagen de la especie:</label>
+                    <input type="file" name="foto_especie" id="foto_especie" accept="image/*">
+
+                    @error('foto_especie')
+                        <small class="error-msg">{{ $message }}</small>
+                    @enderror
                 </div>
 
                 <button type="submit" class="btn-guardar">Guardar Nueva Especie en el Herbario</button>
@@ -187,4 +192,5 @@
     </div>
 
 </body>
+
 </html>
