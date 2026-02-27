@@ -125,23 +125,9 @@ class UsuariosController extends Controller
      */
     public function destroy(string $id)
     {
-
-        $evento = Eventos::with('anfitrion')->findOrFail($id);
-        $usuarioAutenticado = auth()->user();
-
-
-        if ($evento->id_anfitrion !== $usuarioAutenticado->id) {
-            return back()->with('error', 'No tienes permiso para borrar este evento.');
-        }
-
-        $usuarioAutenticado->decrement('karma', 4);
-
-        if ($evento->imagen) {
-            Storage::disk('public')->delete($evento->imagen);
-        }
-
-        $evento->delete();
-
+        $usuario = Usuarios::findOrFail($id);
+        $usuario->delete();
+        
         return redirect()->route('eventos.index')
             ->with('success', 'Evento eliminado y se han restado 4 puntos de karma.');
     }
