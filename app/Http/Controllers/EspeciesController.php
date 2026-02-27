@@ -32,15 +32,15 @@ class EspeciesController extends Controller
      */
     public function store(EspeciesPost $request)
     {
-        // 1. Obtener los datos ya validados
+        
         $datos = $request->validated();
 
-        // 2. Gestionar la subida de la foto
+        
         if ($request->hasFile('foto_especie')) {
             $datos['foto_especie'] = $request->file('foto_especie')->store('especies', 'public');
         }
 
-        // 3. Crear el registro de forma directa (sin relación)
+       
         Especies::create($datos);
 
 
@@ -70,24 +70,23 @@ class EspeciesController extends Controller
      */
     public function update(EspeciesModificarPost $request, string $id)
     {
-        // 1. Buscamos el registro (findOrFail lanza 404 si no existe)
+        
         $especie = Especies::findOrFail($id);
 
-        // 2. Obtenemos solo los datos validados del Form Request
+        
         $datos = $request->validated();
 
-        // 3. Gestión del archivo físico
+        
         if ($request->hasFile('foto_especie')) {
 
     
-            // Guardamos el nuevo archivo y obtenemos la ruta
+           
             $ruta = $request->file('foto_especie')->store('especies', 'public');
 
-            // Sobrescribimos el valor en el array de datos
             $datos['foto_especie'] = $ruta;
         }
 
-        // 4. Actualizamos el registro con el array final
+        
         $especie->update($datos);
 
         return redirect()->route('especies.index')->with('success', 'Especie actualizada con éxito');

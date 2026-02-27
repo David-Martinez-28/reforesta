@@ -21,12 +21,12 @@
                     onmouseover="this.style.backgroundColor='#f1f8f4'"
                     onmouseout="this.style.backgroundColor='{{ $loop->even ? '#fdfdfd' : '#ffffff' }}'">
 
-                    {{-- ID --}}
+                    
                     <td style="padding: 10px; border: 1px solid #ddd; text-align: center; font-weight: bold;">
                         {{ $evento->id }}
                     </td>
 
-                    {{-- Imagen del Evento --}}
+                    
                     <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
                         @if($evento->imagen)
                             <img src="{{ asset('storage/' . $evento->imagen) }}" alt="Foto"
@@ -36,12 +36,12 @@
                         @endif
                     </td>
 
-                    {{-- Nombre y Nick del Anfitrión --}}
+                   
                     <td style="padding: 10px; border: 1px solid #ddd;">
                         <span style="font-weight: bold; display: block; color: #2c3e50;">{{ $evento->nombre }}</span>
                         
                         <div style="display: flex; align-items: center; gap: 8px; margin-top: 5px;">
-                            {{-- Avatar del Anfitrión --}}
+                          
                             @if($evento->anfitrion && $evento->anfitrion->avatar)
                                 <img src="{{ asset('storage/' . $evento->anfitrion->avatar) }}" 
                                      alt="Avatar" 
@@ -56,14 +56,14 @@
                         </div>
                     </td>
 
-                    {{-- Contador de Participantes --}}
+                    
                     <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
                         <div style="background: #e8f4fd; color: #2980b9; padding: 5px 12px; border-radius: 20px; font-weight: bold; font-size: 0.9em; display: inline-block;">
                             👤 {{ $evento->asistentes->count() }}
                         </div>
                     </td>
 
-                    {{-- Especies --}}
+                    
                     <td style="padding: 10px; border: 1px solid #ddd;">
                         @foreach($evento->especies as $especie)
                             <a href="{{ route('especies.show', $especie->id) }}" style="text-decoration: none;">
@@ -74,7 +74,7 @@
                         @endforeach
                     </td>
 
-                    {{-- Ubicación --}}
+                    
                     <td style="padding: 10px; border: 1px solid #ddd;">
                         <div style="font-size: 0.9em;">📍 {{ $evento->ubicacion ?? 'Pendiente' }}</div>
                         <div style="font-size: 0.85em; color: #7f8c8d;">📅
@@ -82,7 +82,7 @@
                         </div>
                     </td>
 
-                    {{-- Acciones --}}
+                    
                     <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
                         <div style="display: flex; flex-direction: column; gap: 5px; align-items: center;">
                             <a href="{{ route('eventos.show', $evento->id) }}"

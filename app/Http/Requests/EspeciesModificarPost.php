@@ -17,7 +17,7 @@ class EspeciesModificarPost extends FormRequest
     {
         
         return [
-            // 3. La regla UNIQUE ahora ignora el ID actual para permitir modificar sin cambiar el nombre
+           
             'nombre_cientifico' => [
                 'required',
                 'string',

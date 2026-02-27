@@ -93,16 +93,16 @@ class UsuariosController extends Controller
         // 2. Lógica del Avatar
         if ($request->hasFile('avatar')) {
 
-            // --- MEJORA: Borrar el archivo viejo si existe ---
+            
             if ($usuario->avatar && Storage::disk('public')->exists($usuario->avatar)) {
                 Storage::disk('public')->delete($usuario->avatar);
             }
 
-            // Guardar el nuevo
+            
             $datos['avatar'] = $request->file('avatar')->store('avatars', 'public');
 
         } else {
-            // Si no sube nada, nos aseguramos de no tocar lo que ya hay en la BD
+            
             unset($datos['avatar']);
         }
 
@@ -138,20 +138,20 @@ class UsuariosController extends Controller
 
     public function login(LoginPost $request)
     {
-        // 1. Los datos ya vienen validados por LoginPost
+        
         $credenciales = [
-            'email' => $request->login, // Mapeamos 'login' del form a 'email' de la DB
+            'email' => $request->login, 
             'password' => $request->password
         ];
 
-        // 2. Intentar el login
+        
         if (Auth::attempt($credenciales)) {
-            // Éxito: Regenerar sesión por seguridad
+            
             $request->session()->regenerate();
             return redirect()->route('eventos.index');
         }
 
-        // 3. Error: Credenciales no coinciden con la base de datos
+        
         return back()->withErrors([
             'error_auth' => 'El correo electrónico o la contraseña son incorrectos.',
         ])->withInput($request->only('login'));

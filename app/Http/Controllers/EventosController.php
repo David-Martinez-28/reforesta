@@ -16,7 +16,7 @@ class EventosController extends Controller
      */
     public function index()
     {
-        // Eliminar automáticamente antes de mostrar la lista
+        
         $pasados = Eventos::where('fecha', '<', now())->get();
         foreach ($pasados as $p) {
             
@@ -102,16 +102,14 @@ class EventosController extends Controller
 
         if ($request->hasFile('imagen')) {
 
-            // 2. Guardar la nueva imagen
             $datos['imagen'] = $request->file('imagen')->store('eventos', 'public');
         }
 
-        // 3. Sincronizar las especies (Many-to-Many)
-        // Es vital añadir esto para que los cambios en el select múltiple se guarden
+        
         if ($request->has('especies')) {
             $evento->especies()->sync($request->especies);
         } else {
-            // Si el usuario desmarca todas, vaciamos la relación
+            
             $evento->especies()->detach();
         }
 

@@ -14,15 +14,12 @@ class UsuarioPost extends FormRequest
 
     public function rules(): array
     {
-        // Obtenemos el ID del usuario de la ruta para poder ignorarlo en el unique
-        // Dependiendo de cómo se llame tu parámetro en web.php (usuario o usuarios)
-        $usuarioId = $this->route('usuario') ?? $this->route('usuarios');
+         $usuarioId = $this->route('usuario') ?? $this->route('usuarios');
 
         return [
             'nombre' => 'required|string|max:255',
 
-            // Si hay un ID, ignoramos ese registro en la validación unique
-            'nick' => [
+             'nick' => [
                 'required',
                 'string',
                 'max:50',

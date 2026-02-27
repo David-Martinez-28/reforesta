@@ -34,7 +34,7 @@
                         <td style="padding: 12px;">
                             <div style="display: flex; align-items: center;">
                                 @php
-                                    // Lógica para determinar la fuente de la imagen
+                                   
                                     $urlImagen = $especie->foto_especie;
                                     if ($urlImagen && !Str::startsWith($urlImagen, ['http://', 'https://'])) {
                                         $urlImagen = asset('storage/' . $urlImagen);

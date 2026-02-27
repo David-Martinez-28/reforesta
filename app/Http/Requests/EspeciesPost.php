@@ -6,17 +6,13 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class EspeciesPost extends FormRequest
 {
-    /**
-     * Cambia esto a true para permitir que el formulario se procese.
-     */
+    
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Definimos las reglas basadas en tu base de datos y el formulario.
-     */
+   
     public function rules(): array
     {
         return [
@@ -31,9 +27,7 @@ class EspeciesPost extends FormRequest
         ];
     }
 
-    /**
-     * Opcional: Personalizar los mensajes de error.
-     */
+    
     public function messages(): array
     {
         return [

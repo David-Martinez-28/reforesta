@@ -8,13 +8,13 @@ class LoginPost extends FormRequest
 {
     public function authorize(): bool
     {
-        return true; // IMPORTANTE: Cambiar a true
+        return true; 
     }
 
     public function rules(): array
     {
         return [
-            'login'    => 'required|email', // 'login' es el nombre del input en tu HTML
+            'login'    => 'required|email', 
             'password' => 'required|string',
         ];
     }

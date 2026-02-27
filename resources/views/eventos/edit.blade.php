@@ -130,7 +130,7 @@
         <div class="contenedor">
             <h1>Modificar evento</h1>
 
-            {{-- Importante: Añadido enctype para procesar la imagen --}}
+          
             <form action="{{ route('eventos.update', $eventos->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
@@ -210,11 +210,11 @@
                     </div>
 
                     <div class="seccion-avatar">
-                        {{-- 1. Corregido: Usar la misma variable $eventos y el campo correcto --}}
+                        
                         @if($eventos->imagen)
                             <div style="margin-bottom: 10px;">
                                 <p class="ayuda">Imagen actual:</p>
-                                {{-- 2. Corregido: La variable debe ser $eventos->imagen --}}
+                               
                                 <img src="{{ asset('storage/' . $eventos->imagen) }}" alt="Portada" class="img-preview">
                             </div>
                         @endif
@@ -222,7 +222,7 @@
                         <label for="avatar">Foto de Perfil (Avatar)</label>
                         <p class="instruccion">Sube una imagen cuadrada para mejores resultados.</p>
 
-                        {{-- 3. Nota: Si el campo en la base de datos es 'imagen', el name debe ser 'imagen' --}}
+                        
                         <input type="file" name="imagen" id="avatar" accept="image/*">
 
                         @error('imagen')

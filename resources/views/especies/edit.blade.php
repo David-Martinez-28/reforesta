@@ -150,7 +150,7 @@
     <div class="contenedor">
         <h1>📝 Modificar Especie</h1>
 
-        {{-- 1. BLOQUE DE ERRORES GENERALES --}}
+        
         @if ($errors->any())
             <div class="alerta-errores">
                 <strong>⚠️ Por favor, revisa los siguientes campos:</strong>
@@ -168,7 +168,7 @@
 
             <div class="grid-form">
 
-                {{-- Nombre Científico --}}
+                
                 <div class="campo-completo">
                     <label for="nombre_cientifico">Nombre Científico:</label>
                     <input type="text" name="nombre_cientifico" id="nombre_cientifico"
@@ -177,7 +177,7 @@
                     @error('nombre_cientifico') <small class="error-msg">{{ $message }}</small> @enderror
                 </div>
 
-                {{-- Tiempo Adultez --}}
+                
                 <div>
                     <label for="tiempo_para_adultez">Tiempo para la Adultez:</label>
                     <input type="text" name="tiempo_para_adultez" id="tiempo_para_adultez"
@@ -186,7 +186,7 @@
                     @error('tiempo_para_adultez') <small class="error-msg">{{ $message }}</small> @enderror
                 </div>
 
-                {{-- Región --}}
+                
                 <div>
                     <label for="region_origen">Región de Origen:</label>
                     <input type="text" name="region_origen" id="region_origen"
@@ -195,7 +195,7 @@
                     @error('region_origen') <small class="error-msg">{{ $message }}</small> @enderror
                 </div>
 
-                {{-- Clima --}}
+                
                 <div>
                     <label for="clima">Clima Ideal:</label>
                     <input type="text" name="clima" id="clima" class="{{ $errors->has('clima') ? 'is-invalid' : '' }}"
@@ -203,7 +203,7 @@
                     @error('clima') <small class="error-msg">{{ $message }}</small> @enderror
                 </div>
 
-                {{-- Enlace --}}
+               
                 <div>
                     <label for="enlace_descripcion">Enlace de Información:</label>
                     <input type="url" name="enlace_descripcion" id="enlace_descripcion"
@@ -212,7 +212,7 @@
                     @error('enlace_descripcion') <small class="error-msg">{{ $message }}</small> @enderror
                 </div>
 
-                {{-- Beneficios --}}
+               
                 <div class="campo-completo">
                     <label for="beneficios">Beneficios Ecológicos:</label>
                     <textarea name="beneficios" id="beneficios" rows="4"

@@ -38,7 +38,7 @@
 
                     <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px; align-items: flex-start;">
                         @auth
-                            {{-- Join / Leave Logic --}}
+                            
                             @if ($evento->asistentes->contains(auth()->id()))
                                 <form action="{{ route('usuarios.desunirse') }}" method="POST">
                                     @csrf @method('PATCH')
