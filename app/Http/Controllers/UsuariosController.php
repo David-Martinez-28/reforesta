@@ -128,8 +128,8 @@ class UsuariosController extends Controller
         $usuario = Usuarios::findOrFail($id);
         $usuario->delete();
         
-        return redirect()->route('eventos.index')
-            ->with('success', 'Evento eliminado y se han restado 4 puntos de karma.');
+        return redirect()->route('usuarios.index')
+            ->with('success', 'Usuario eliminado ');
     }
     public function loginForm()
     {
